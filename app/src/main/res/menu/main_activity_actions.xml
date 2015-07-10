@@ -1,6 +1,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/menu_item_switch" app:showAsAction="always" android:title="@string/menu_item_switch" android:actionViewClass="android.widget.Switch"></item>
-    <item android:id="@+id/menu_item_about" android:title="@string/menu_item_about"></item>
-    <item android:id="@+id/menu_item_exit" android:title="@string/menu_item_exit"></item>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.SmartZPNActivity">
+    <item
+        android:id="@+id/menu_item_switch"
+        android:actionViewClass="android.widget.Switch"
+        android:title="@string/menu_item_switch"
+        app:showAsAction="always"/>
+    <item
+        app:showAsAction="always"
+        android:id="@+id/menu_item_about"
+        android:title="@string/menu_item_about"/>
+    <item
+        app:showAsAction="always"
+        android:id="@+id/menu_item_exit"
+        android:title="@string/menu_item_exit"/>
 </menu>

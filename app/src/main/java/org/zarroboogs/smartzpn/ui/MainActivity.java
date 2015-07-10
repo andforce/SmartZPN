@@ -1,7 +1,5 @@
 package org.zarroboogs.smartzpn.ui;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -11,6 +9,7 @@ import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -28,7 +27,7 @@ import org.zarroboogs.smartzpn.core.LocalVpnService;
 import java.io.File;
 import java.util.Calendar;
 
-public class MainActivity extends Activity implements
+public class MainActivity extends ActionBarActivity implements
         View.OnClickListener,
         OnCheckedChangeListener,
         LocalVpnService.onStatusChangedListener {
@@ -54,6 +53,7 @@ public class MainActivity extends Activity implements
 
         scrollViewLog = (ScrollView) findViewById(R.id.scrollViewLog);
         textViewLog = (TextView) findViewById(R.id.textViewLog);
+        switchProxy = (Switch) findViewById(R.id.switch1);
         findViewById(R.id.configUrlLayout).setOnClickListener(this);
 
         textViewConfigUrl = (TextView) findViewById(R.id.textViewConfigUrl);
@@ -128,9 +128,9 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onClick(View v) {
-//        if (switchProxy.isChecked()) {
-//            return;
-//        }
+        if (switchProxy.isChecked()) {
+            return;
+        }
 
         new AlertDialog.Builder(this)
                 .setTitle(R.string.config_url)
@@ -189,7 +189,6 @@ public class MainActivity extends Activity implements
                 .show();
     }
 
-    @SuppressLint("DefaultLocale")
     @Override
     public void onLogReceived(String logString) {
         mCalendar.setTimeInMillis(System.currentTimeMillis());
@@ -292,7 +291,7 @@ public class MainActivity extends Activity implements
             return false;
         }
 
-        switchProxy = (Switch) menuItem.getActionView();
+//        switchProxy = (Switch) menuItem.getActionView();
         if (switchProxy == null) {
             return false;
         }

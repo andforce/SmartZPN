@@ -25,12 +25,12 @@
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
     </LinearLayout>
-   
+
       <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:background="@android:color/darker_gray" 
-        android:layout_marginLeft="8dp" 
+        android:background="@android:color/darker_gray"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:alpha="0.4"/>
 
@@ -54,4 +54,9 @@
         </LinearLayout>
     </ScrollView>
 
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Switch"
+        android:id="@+id/switch1" />
 </TableLayout>
