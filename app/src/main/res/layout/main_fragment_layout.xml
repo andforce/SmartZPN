@@ -7,13 +7,14 @@
     android:fitsSystemWindows="true">
 
     <com.dd.CircularProgressButton
+        android:layout_centerHorizontal="true"
         android:id="@+id/circularButton1"
-        android:layout_width="80dp"
+        android:layout_width="160dp"
         android:layout_height="80dp"
         android:layout_marginTop="16dp"
         android:textColor="@color/cpb_white"
         android:textSize="18sp"
-        app:cpb_cornerRadius="80dp"
+        app:cpb_cornerRadius="40dp"
         app:cpb_selectorComplete="@drawable/complete_state_selector"
         app:cpb_selectorError="@drawable/error_state_selector"
         app:cpb_selectorIdle="@drawable/idle_state_selector"
