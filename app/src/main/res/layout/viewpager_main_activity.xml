@@ -9,8 +9,15 @@
     <org.zarroboogs.smartzpn.jellyviewpager.widget.JellyViewPager
         android:id="@+id/contentViewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" />
 
-    </org.zarroboogs.smartzpn.jellyviewpager.widget.JellyViewPager>
+    <org.zarroboogs.smartzpn.liangfeizc.RubberIndicator
+        android:layout_centerHorizontal="true"
+        android:id="@+id/rubber"
+        android:layout_width="160dp"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp" />
 
 </RelativeLayout>

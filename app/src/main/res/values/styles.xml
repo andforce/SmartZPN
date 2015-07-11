@@ -5,4 +5,8 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <declare-styleable name="CircleView">
+        <attr name="cv_color" format="color" />
+        <attr name="cv_radius" format="integer" />
+    </declare-styleable>
 </resources>
