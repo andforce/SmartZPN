@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "org.zarroboogs.smartzpn"
+        applicationId "org.zarroboogs.jellyviewpager"
         minSdkVersion 19
-        targetSdkVersion 21
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
     }
@@ -21,12 +21,9 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    //compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.android.support:appcompat-v7:22.1.1'
-    //https://github.com/journeyapps/zxing-android-embedded
-    compile 'com.journeyapps:zxing-android-embedded:3.0.1@aar'
-    compile 'com.google.zxing:core:3.2.0'
+    compile 'com.facebook.rebound:rebound:0.3.8'
+    compile 'com.nineoldandroids:library:2.4.0'
 
-    compile 'com.github.dmytrodanylyk.circular-progress-button:library:1.1.3'
 
 }

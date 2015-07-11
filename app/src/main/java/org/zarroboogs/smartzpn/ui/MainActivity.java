@@ -16,8 +16,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.*;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+
+import com.dd.CircularProgressButton;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -45,11 +48,31 @@ public class MainActivity extends ActionBarActivity implements
     private ScrollView scrollViewLog;
     private TextView textViewConfigUrl;
     private Calendar mCalendar;
+    private CircularProgressButton circularProgressButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //透明状态栏
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        //透明导航栏
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+
         setContentView(R.layout.activity_main);
+
+        circularProgressButton = (CircularProgressButton) findViewById(R.id.circularButton1);
+
+        circularProgressButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                circularProgressButton.setProgress(50);
+            }
+        });
+
+
+
+
+
 
         scrollViewLog = (ScrollView) findViewById(R.id.scrollViewLog);
         textViewLog = (TextView) findViewById(R.id.textViewLog);
@@ -69,6 +92,9 @@ public class MainActivity extends ActionBarActivity implements
 
         mCalendar = Calendar.getInstance();
         LocalVpnService.addOnStatusChangedListener(this);
+
+        switchProxy.setChecked(LocalVpnService.IsRunning);
+        switchProxy.setOnCheckedChangeListener(this);
     }
 
     String readConfigUrl() {

@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/JellyViewPager/JellyViewPager.iml" filepath="$PROJECT_DIR$/JellyViewPager/JellyViewPager.iml" />
       <module fileurl="file://$PROJECT_DIR$/SmartZPN.iml" filepath="$PROJECT_DIR$/SmartZPN.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
