@@ -28,7 +28,7 @@ import org.zarroboogs.smartzpn.tcpip.CommonMethods;
 import org.zarroboogs.smartzpn.tcpip.IPHeader;
 import org.zarroboogs.smartzpn.tcpip.TCPHeader;
 import org.zarroboogs.smartzpn.tcpip.UDPHeader;
-import org.zarroboogs.smartzpn.ui.MainActivity;
+import org.zarroboogs.smartzpn.ui.ViewPagerMainActivity;
 
 public class LocalVpnService extends VpnService implements Runnable {
 
@@ -373,7 +373,7 @@ public class LocalVpnService extends VpnService implements Runnable {
 			}
 		}
  
-		Intent intent=new Intent(this, MainActivity.class);
+		Intent intent=new Intent(this, ViewPagerMainActivity.class);
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 		builder.setConfigureIntent(pendingIntent);
 
