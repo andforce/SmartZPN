@@ -41,6 +41,8 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
             getSupportActionBar().setTitle(null);
         }
 
+        mConnBtn = (ProgressButton) findViewById(R.id.connectionBtn);
+
         View guillotineMenu = LayoutInflater.from(this).inflate(R.layout.guillotine, null);
         FrameLayout root = (FrameLayout) findViewById(R.id.root);
         root.addView(guillotineMenu);
@@ -55,14 +57,16 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 .setGuillotineListener(new GuillotineListener() {
                     @Override
                     public void onGuillotineOpened() {
+                        mConnBtn.setClickable(false);
                     }
 
                     @Override
                     public void onGuillotineClosed() {
+                        mConnBtn.setClickable(true);
                     }
                 })
                 .build();
-        mConnBtn = (ProgressButton) findViewById(R.id.connectionBtn);
+
         mConnBtn.setOnClickListener(this);
         LocalVpnService.addOnStatusChangedListener(this);
 
@@ -77,6 +81,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         if (v.getId() == R.id.connectionBtn){
             if (!LocalVpnService.IsRunning){
                 mConnBtn.showProgress();
+                mConnBtn.setClickable(false);
                 Intent intent = LocalVpnService.prepare(this);
                 if (intent == null) {
                     startVPNService();
@@ -103,7 +108,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onStatusChanged(String status, Boolean isRunning) {
-
+        mConnBtn.setClickable(true);
     }
 
     @Override
