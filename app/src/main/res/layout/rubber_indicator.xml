@@ -4,8 +4,8 @@
 
     <org.zarroboogs.smartzpn.liangfeizc.CircleView
         android:id="@+id/outer_circle"
-        android:layout_width="85dp"
-        android:layout_height="85dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_centerVertical="true"
         app:cv_color="@color/outerCircleColor" />
 
@@ -18,8 +18,8 @@
         android:layout_alignRight="@+id/container"
         android:layout_alignStart="@+id/container"
         android:layout_gravity="center"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
         android:background="@drawable/indicator_background" />
 
     <LinearLayout

@@ -55,6 +55,7 @@ public class MainFragment extends Fragment implements LocalVpnService.onStatusCh
         circularProgressButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                circularProgressButton.setProgress(1);
                 Intent intent = LocalVpnService.prepare(getActivity());
                 if (intent == null) {
                     startVPNService();
