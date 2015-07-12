@@ -42,6 +42,9 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         mConnBtn = (ProgressButton) findViewById(R.id.connectionBtn);
+        if (LocalVpnService.IsRunning){
+            mConnBtn.setComplete();
+        }
 
         View guillotineMenu = LayoutInflater.from(this).inflate(R.layout.guillotine, null);
         FrameLayout root = (FrameLayout) findViewById(R.id.root);
@@ -70,9 +73,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         mConnBtn.setOnClickListener(this);
         LocalVpnService.addOnStatusChangedListener(this);
 
-        if (LocalVpnService.IsRunning){
-            mConnBtn.setComplete();
-        }
     }
 
 
@@ -98,6 +98,21 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == START_VPN_SERVICE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                startVPNService();
+            } else {
+                mConnBtn.setIdle();
+                mConnBtn.setClickable(true);
+                onLogReceived("canceled.");
+            }
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void startVPNService() {
