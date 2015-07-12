@@ -24,7 +24,7 @@
 
 
     <string name="Upload">连接</string>
-    <string name="Error">Error</string>
+    <string name="Error">重试</string>
     <string name="Complete">断开</string>
     <string name="IndeterminateProgressSample">Indeterminate Progress Sample</string>
     <string name="IntegerProgressSample">Integer Progress Sample</string>

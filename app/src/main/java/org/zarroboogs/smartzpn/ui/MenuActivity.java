@@ -55,12 +55,10 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 .setGuillotineListener(new GuillotineListener() {
                     @Override
                     public void onGuillotineOpened() {
-                        Toast.makeText(getApplicationContext(), "Open", Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void onGuillotineClosed() {
-                        Toast.makeText(getApplicationContext(), "Close", Toast.LENGTH_LONG).show();
                     }
                 })
                 .build();
@@ -116,6 +114,12 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
             mConnBtn.setIdle();
         }
 
+    }
+
+    @Override
+    public void onConnectionError() {
+        mConnBtn.stopShowProgress();
+        mConnBtn.setError();
     }
 
     @Override

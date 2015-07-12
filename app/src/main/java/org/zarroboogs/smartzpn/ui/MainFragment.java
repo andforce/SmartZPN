@@ -116,4 +116,9 @@ public class MainFragment extends Fragment implements LocalVpnService.onStatusCh
     public void onConnectionChanged(boolean isConn) {
 
     }
+
+    @Override
+    public void onConnectionError() {
+
+    }
 }

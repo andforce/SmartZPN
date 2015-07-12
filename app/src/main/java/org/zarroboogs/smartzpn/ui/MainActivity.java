@@ -240,6 +240,11 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onConnectionError() {
+
+    }
+
+    @Override
     public void onStatusChanged(String status, Boolean isRunning) {
         switchProxy.setEnabled(true);
         switchProxy.setChecked(isRunning);

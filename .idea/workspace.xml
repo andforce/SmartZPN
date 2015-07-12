@@ -28,14 +28,46 @@
       <content type="file-editors">
         <state>
           <leaf>
+            <file leaf-file-name="MainFragment.java" pinned="false" current-in-tab="false">
+              <entry file="file://$PROJECT_DIR$/app/src/main/java/org/zarroboogs/smartzpn/ui/MainFragment.java">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state vertical-scroll-proportion="0.0">
+                    <caret line="78" column="62" selection-start-line="78" selection-start-column="62" selection-end-line="78" selection-end-column="62" />
+                    <folding />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+            <file leaf-file-name="ProxyConfig.java" pinned="false" current-in-tab="false">
+              <entry file="file://$PROJECT_DIR$/app/src/main/java/org/zarroboogs/smartzpn/core/ProxyConfig.java">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state vertical-scroll-proportion="0.0">
+                    <caret line="273" column="27" selection-start-line="273" selection-start-column="16" selection-end-line="273" selection-end-column="27" />
+                    <folding />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+            <file leaf-file-name="LocalVpnService.java" pinned="false" current-in-tab="false">
+              <entry file="file://$PROJECT_DIR$/app/src/main/java/org/zarroboogs/smartzpn/core/LocalVpnService.java">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state vertical-scroll-proportion="-4.24">
+                    <caret line="246" column="47" selection-start-line="246" selection-start-column="47" selection-end-line="246" selection-end-column="47" />
+                    <folding>
+                      <element signature="imports" expanded="true" />
+                      <element signature="e#13622#13662#0" expanded="true" />
+                      <element signature="e#13960#14003#0" expanded="true" />
+                    </folding>
+                  </state>
+                </provider>
+              </entry>
+            </file>
             <file leaf-file-name="MenuActivity.java" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/app/src/main/java/org/zarroboogs/smartzpn/ui/MenuActivity.java">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state vertical-scroll-proportion="0.22613803">
-                    <caret line="75" column="0" selection-start-line="75" selection-start-column="0" selection-end-line="75" selection-end-column="0" />
-                    <folding>
-                      <element signature="imports" expanded="true" />
-                    </folding>
+                  <state vertical-scroll-proportion="0.20558003">
+                    <caret line="10" column="28" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
+                    <folding />
                   </state>
                 </provider>
               </entry>
@@ -44,9 +76,23 @@
               <entry file="file://$PROJECT_DIR$/app/src/main/java/org/zarroboogs/smartzpn/ui/MainActivity.java">
                 <provider selected="true" editor-type-id="text-editor">
                   <state vertical-scroll-proportion="0.0">
-                    <caret line="95" column="56" selection-start-line="95" selection-start-column="31" selection-end-line="95" selection-end-column="56" />
+                    <caret line="225" column="0" selection-start-line="225" selection-start-column="0" selection-end-line="225" selection-end-column="0" />
                     <folding>
                       <element signature="imports" expanded="true" />
+                    </folding>
+                  </state>
+                </provider>
+              </entry>
+            </file>
+            <file leaf-file-name="ProgressButton.java" pinned="false" current-in-tab="false">
+              <entry file="file://$PROJECT_DIR$/app/src/main/java/org/zarroboogs/smartzpn/ui/widget/ProgressButton.java">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state vertical-scroll-proportion="0.0">
+                    <caret line="52" column="30" selection-start-line="52" selection-start-column="30" selection-end-line="52" selection-end-column="30" />
+                    <folding>
+                      <element signature="imports" expanded="true" />
+                      <element signature="e#841#842#0" expanded="true" />
+                      <element signature="e#878#879#0" expanded="true" />
                     </folding>
                   </state>
                 </provider>
@@ -70,10 +116,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="GuillotineInterpolator.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="GuillotineInterpolator.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GuillotineMenu/src/main/java/com/yalantis/guillotine/util/GuillotineInterpolator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5753425">
+            <state vertical-scroll-proportion="0.0">
               <caret line="6" column="3" selection-start-line="6" selection-start-column="3" selection-end-line="6" selection-end-column="3" />
               <folding />
             </state>
@@ -100,11 +146,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="strings.xml" pinned="false" current-in-tab="false">
+      <file leaf-file-name="strings.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.92">
-              <caret line="7" column="46" selection-start-line="7" selection-start-column="46" selection-end-line="7" selection-end-column="46" />
+            <state vertical-scroll-proportion="0.5123967">
+              <caret line="15" column="41" selection-start-line="15" selection-start-column="41" selection-end-line="15" selection-end-column="41" />
               <folding />
             </state>
           </provider>
@@ -2252,13 +2298,13 @@
         <option value="$PROJECT_DIR$/app/src/main/res/values/styles.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/guillotine.xml" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/menu_activity.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/zarroboogs/smartzpn/ui/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/zarroboogs/smartzpn/ui/MainFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/menu_activity.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/zarroboogs/smartzpn/core/LocalVpnService.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/zarroboogs/smartzpn/ui/widget/ProgressButton.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/zarroboogs/smartzpn/ui/MenuActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
       </list>
     </option>
   </component>
@@ -2715,7 +2761,7 @@
     <property name="android.project.structure.last.selected" value="app" />
     <property name="android.project.structure.proportion" value="0.15" />
     <property name="recentsLimit" value="5" />
-    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="0a9a199e0591e4ed" />
+    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="12a46895" />
     <property name="OverrideImplement.combined" value="true" />
     <property name="OverrideImplement.overriding.sorted" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../GuillotineMenu-Android" />
@@ -3000,7 +3046,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/org/zarroboogs/smartzpn/core/LocalVpnService.java</url>
-          <line>237</line>
+          <line>252</line>
           <properties />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -3010,7 +3056,7 @@
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="2" />
+      <option name="time" value="3" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -3127,20 +3173,6 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="1" column="39" selection-start-line="1" selection-start-column="39" selection-end-line="1" selection-end-column="39" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///Volumes/HDD-FILE/copy_from_desktop/adt-bundle-mac-x86_64-20140702/sdk/sources/android-21/android/os/ParcelFileDescriptor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33290654">
-          <caret line="505" column="26" selection-start-line="505" selection-start-column="26" selection-end-line="505" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/zarroboogs/smartzpn/core/ProxyConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.12548016">
-          <caret line="30" column="32" selection-start-line="30" selection-start-column="32" selection-end-line="30" selection-end-column="32" />
         </state>
       </provider>
     </entry>
@@ -3376,18 +3408,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/zarroboogs/smartzpn/ui/MainFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="107" column="36" selection-start-line="107" selection-start-column="36" selection-end-line="107" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.github.dmytrodanylyk.circular-progress-button/library/1.1.3/jars/classes.jar!/com/dd/CircularProgressButton.class">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.2278481">
           <caret line="88" column="19" selection-start-line="88" selection-start-column="19" selection-end-line="88" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Volumes/HDD-FILE/copy_from_desktop/adt-bundle-mac-x86_64-20140702/sdk/sources/android-21/android/os/ParcelFileDescriptor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="68" column="38" selection-start-line="68" selection-start-column="18" selection-end-line="68" selection-end-column="38" />
           <folding />
         </state>
       </provider>
@@ -3397,44 +3429,16 @@
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-14.275862">
-          <caret line="53" column="43" selection-start-line="53" selection-start-column="42" selection-end-line="53" selection-end-column="43" />
-          <folding>
-            <element signature="e#2168#2186#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.92">
-          <caret line="7" column="46" selection-start-line="7" selection-start-column="46" selection-end-line="7" selection-end-column="46" />
+        <state vertical-scroll-proportion="-4.62069">
+          <caret line="33" column="52" selection-start-line="33" selection-start-column="52" selection-end-line="33" selection-end-column="52" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/zarroboogs/smartzpn/ui/widget/ProgressButton.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/zarroboogs/smartzpn/core/ProxyConfig.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#841#842#0" expanded="true" />
-            <element signature="e#878#879#0" expanded="true" />
-            <element signature="e#908#909#0" expanded="true" />
-            <element signature="e#944#945#0" expanded="true" />
-            <element signature="e#973#974#0" expanded="true" />
-            <element signature="e#1008#1009#0" expanded="true" />
-            <element signature="e#1041#1042#0" expanded="true" />
-            <element signature="e#1097#1098#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/zarroboogs/smartzpn/core/LocalVpnService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="22" column="39" selection-start-line="22" selection-start-column="39" selection-end-line="22" selection-end-column="39" />
+          <caret line="273" column="27" selection-start-line="273" selection-start-column="16" selection-end-line="273" selection-end-column="27" />
           <folding />
         </state>
       </provider>
@@ -3442,27 +3446,65 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/java/org/zarroboogs/smartzpn/ui/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="95" column="56" selection-start-line="95" selection-start-column="31" selection-end-line="95" selection-end-column="56" />
+          <caret line="225" column="0" selection-start-line="225" selection-start-column="0" selection-end-line="225" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/zarroboogs/smartzpn/ui/MenuActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/zarroboogs/smartzpn/ui/MainFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22613803">
-          <caret line="75" column="0" selection-start-line="75" selection-start-column="0" selection-end-line="75" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="78" column="62" selection-start-line="78" selection-start-column="62" selection-end-line="78" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/zarroboogs/smartzpn/core/LocalVpnService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.24">
+          <caret line="246" column="47" selection-start-line="246" selection-start-column="47" selection-end-line="246" selection-end-column="47" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#13622#13662#0" expanded="true" />
+            <element signature="e#13960#14003#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/zarroboogs/smartzpn/ui/widget/ProgressButton.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="52" column="30" selection-start-line="52" selection-start-column="30" selection-end-line="52" selection-end-column="30" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#841#842#0" expanded="true" />
+            <element signature="e#878#879#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/GuillotineMenu/src/main/java/com/yalantis/guillotine/util/GuillotineInterpolator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5753425">
+        <state vertical-scroll-proportion="0.0">
           <caret line="6" column="3" selection-start-line="6" selection-start-column="3" selection-end-line="6" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/zarroboogs/smartzpn/ui/MenuActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.20558003">
+          <caret line="10" column="28" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5123967">
+          <caret line="15" column="41" selection-start-line="15" selection-start-column="41" selection-end-line="15" selection-end-column="41" />
           <folding />
         </state>
       </provider>

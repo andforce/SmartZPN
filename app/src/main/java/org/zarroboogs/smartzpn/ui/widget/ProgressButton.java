@@ -45,9 +45,17 @@ public class ProgressButton extends CircularProgressButton {
     }
 
     public void showProgress(){
+        isStopProgress = false;
         mHandler.sendEmptyMessage(SHOW_PROGRESS);
     }
 
+    public void stopShowProgress(){
+        isStopProgress = true;
+        mHandler.removeMessages(SHOW_PROGRESS);
+    }
+
+
+    private boolean isStopProgress = false;
 
     private class MyHandler extends Handler {
 
@@ -60,7 +68,12 @@ public class ProgressButton extends CircularProgressButton {
                         newProgress = 1;
                     }
                     setProgress(newProgress);
-                    sendEmptyMessage(SHOW_PROGRESS);
+                    if (!isStopProgress){
+                        sendEmptyMessage(SHOW_PROGRESS);
+                    } else {
+                        removeMessages(SHOW_PROGRESS);
+
+                    }
                     break;
                 }
             }
