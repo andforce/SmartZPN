@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SmartZPN</string>
+    <string name="app_name">囚徒上网</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -23,9 +23,9 @@
     <string name="config_url_hint">URL或本地文件路径</string>
 
 
-    <string name="Upload">Upload</string>
+    <string name="Upload">连接</string>
     <string name="Error">Error</string>
-    <string name="Complete">Complete</string>
+    <string name="Complete">断开</string>
     <string name="IndeterminateProgressSample">Indeterminate Progress Sample</string>
     <string name="IntegerProgressSample">Integer Progress Sample</string>
     <string name="StateChangeSample">State Change Sample</string>
@@ -42,7 +42,7 @@
 
     <string name="profile">PROFILE</string>
     <string name="feed">FEED</string>
-    <string name="activity">主页</string>
+    <string name="activity">囚徒上网</string>
     <string name="settings">SETTINGS</string>
 
 </resources>

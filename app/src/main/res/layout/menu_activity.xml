@@ -33,10 +33,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="主页"
-                android:textSize="@dimen/guillotine_item_text_size" />
+                android:text="@string/activity"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/guillotine_item_text_size"
+                android:textStyle="bold" />
         </android.support.v7.widget.Toolbar>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <org.zarroboogs.smartzpn.ui.widget.ProgressButton
+                android:layout_centerInParent="true"
+                android:id="@+id/connectionBtn"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                android:layout_marginTop="16dp"
+                android:textColor="@color/cpb_white"
+                android:textSize="25sp"
+                app:cpb_cornerRadius="90dp"
+                app:cpb_textComplete="@string/Complete"
+                app:cpb_textError="@string/Error"
+                app:cpb_textIdle="@string/Upload"
+                app:cpb_selectorIdle="@drawable/idle_state_selector"
+                app:cpb_selectorComplete="@drawable/complete_state_selector"
+                app:cpb_selectorError="@drawable/error_state_selector"/>
+
+        </RelativeLayout>
 
     </LinearLayout>
 </FrameLayout>

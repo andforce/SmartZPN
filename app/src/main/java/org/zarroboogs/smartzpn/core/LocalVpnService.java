@@ -28,7 +28,7 @@ import org.zarroboogs.smartzpn.tcpip.CommonMethods;
 import org.zarroboogs.smartzpn.tcpip.IPHeader;
 import org.zarroboogs.smartzpn.tcpip.TCPHeader;
 import org.zarroboogs.smartzpn.tcpip.UDPHeader;
-import org.zarroboogs.smartzpn.ui.MainActivity;
+import org.zarroboogs.smartzpn.ui.MenuActivity;
 
 public class LocalVpnService extends VpnService implements Runnable {
 
@@ -86,6 +86,7 @@ public class LocalVpnService extends VpnService implements Runnable {
 	public interface onStatusChangedListener {
 		public void onStatusChanged(String status, Boolean isRunning);
 		public void onLogReceived(String logString);
+		public void onConnectionChanged(boolean isConn);
 	}
 
 	public static void addOnStatusChangedListener(onStatusChangedListener listener) {
@@ -99,7 +100,17 @@ public class LocalVpnService extends VpnService implements Runnable {
 			m_OnStatusChangedListeners.remove(listener);
 		}
 	}
-	
+
+	private void onConnectionChanged(final boolean isConn){
+		m_Handler.post(new Runnable() {
+			@Override
+			public void run() {
+				for (Map.Entry<onStatusChangedListener, Object> entry : m_OnStatusChangedListeners.entrySet()) {
+					entry.getKey().onConnectionChanged(isConn);
+				}
+			}
+		});
+	}
 	private void onStatusChanged(final String status, final boolean isRunning) {
 		m_Handler.post(new Runnable() {
 			@Override
@@ -373,13 +384,14 @@ public class LocalVpnService extends VpnService implements Runnable {
 			}
 		}
  
-		Intent intent=new Intent(this, MainActivity.class);
+		Intent intent=new Intent(this, MenuActivity.class);
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 		builder.setConfigureIntent(pendingIntent);
 
 		builder.setSession(ProxyConfig.Instance.getSessionName());
 		ParcelFileDescriptor pfdDescriptor = builder.establish();
 		onStatusChanged(ProxyConfig.Instance.getSessionName()+getString(R.string.vpn_connected_status), true);
+		onConnectionChanged(true);
 		return pfdDescriptor;
 	}
 	
@@ -393,6 +405,7 @@ public class LocalVpnService extends VpnService implements Runnable {
 			// ignore
 		}
 		onStatusChanged(ProxyConfig.Instance.getSessionName()+getString(R.string.vpn_disconnected_status), false);
+		onConnectionChanged(false);
 		this.m_VPNOutputStream = null;
 	}
 	

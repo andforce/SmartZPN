@@ -1,5 +1,6 @@
 package org.zarroboogs.smartzpn.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,12 +14,16 @@ import com.yalantis.guillotine.animation.GuillotineAnimation;
 import com.yalantis.guillotine.interfaces.GuillotineListener;
 
 import org.zarroboogs.smartzpn.R;
+import org.zarroboogs.smartzpn.core.LocalVpnService;
+import org.zarroboogs.smartzpn.ui.widget.ProgressButton;
 
-public class MenuActivity extends AppCompatActivity {
+public class MenuActivity extends AppCompatActivity implements View.OnClickListener,LocalVpnService.onStatusChangedListener{
 
     private Toolbar mToolbar;
-
+    private ProgressButton mConnBtn;
     private GuillotineAnimation mCuillotine;
+    private static final int START_VPN_SERVICE_REQUEST_CODE = 1985;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,17 +55,72 @@ public class MenuActivity extends AppCompatActivity {
                 .setGuillotineListener(new GuillotineListener() {
                     @Override
                     public void onGuillotineOpened() {
-                        Toast.makeText(getApplicationContext(),"Open", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Open", Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void onGuillotineClosed() {
-                        Toast.makeText(getApplicationContext(),"Close", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Close", Toast.LENGTH_LONG).show();
                     }
                 })
                 .build();
+        mConnBtn = (ProgressButton) findViewById(R.id.connectionBtn);
+        mConnBtn.setOnClickListener(this);
+        LocalVpnService.addOnStatusChangedListener(this);
 
+        if (LocalVpnService.IsRunning){
+            mConnBtn.setComplete();
+        }
     }
 
 
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.connectionBtn){
+            if (!LocalVpnService.IsRunning){
+                mConnBtn.showProgress();
+                Intent intent = LocalVpnService.prepare(this);
+                if (intent == null) {
+                    startVPNService();
+                } else {
+                    startActivityForResult(intent, START_VPN_SERVICE_REQUEST_CODE);
+                }
+            } else {
+                mConnBtn.showProgress();
+                LocalVpnService.Instance.disconnectVPN();
+            }
+        }
+    }
+
+    private void startVPNService() {
+        String configUrl = "http://119.254.103.105/pTKII.DGIb8.spac";
+        LocalVpnService.ConfigUrl = configUrl;
+        startService(new Intent(this, LocalVpnService.class));
+    }
+
+    @Override
+    public void onStatusChanged(String status, Boolean isRunning) {
+
+    }
+
+    @Override
+    public void onLogReceived(String logString) {
+
+    }
+
+    @Override
+    public void onConnectionChanged(boolean isConn) {
+        if (isConn){
+            mConnBtn.setComplete();
+        } else {
+            mConnBtn.setIdle();
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        LocalVpnService.removeOnStatusChangedListener(this);
+        super.onDestroy();
+    }
 }

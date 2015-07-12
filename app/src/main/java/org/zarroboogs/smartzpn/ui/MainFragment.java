@@ -111,4 +111,9 @@ public class MainFragment extends Fragment implements LocalVpnService.onStatusCh
         scrollViewLog.fullScroll(ScrollView.FOCUS_DOWN);
         GL_HISTORY_LOGS = textViewLog.getText() == null ? "" : textViewLog.getText().toString();
     }
+
+    @Override
+    public void onConnectionChanged(boolean isConn) {
+
+    }
 }

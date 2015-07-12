@@ -235,6 +235,11 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onConnectionChanged(boolean isConn) {
+
+    }
+
+    @Override
     public void onStatusChanged(String status, Boolean isRunning) {
         switchProxy.setEnabled(true);
         switchProxy.setChecked(isRunning);
