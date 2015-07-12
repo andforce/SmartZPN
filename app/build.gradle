@@ -11,22 +11,26 @@ android {
         versionCode 1
         versionName "1.0"
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
 
     //gradle assembleRelease
     signingConfigs {
         releaseConfig {
-            keyAlias 'SmartZpn'
+            keyAlias 'smartzpn'
             keyPassword ''
             storeFile file('smartzpn.keystore')
             storePassword ''
         }
     }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.releaseConfig
+        }
+    }
+
+
 }
 
 dependencies {
