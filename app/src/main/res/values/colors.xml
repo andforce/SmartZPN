@@ -3,4 +3,8 @@
     <color name="smallCircleColor">#FFDF8D81</color>
     <color name="largeCircleColor">#FFAF3854</color>
     <color name="outerCircleColor">#FF533456</color>
+
+    <color name="guillotine_background">#444153</color>
+    <color name="guillotine_background_dark">#383547</color>
+    <color name="selected_item_color">#30d1d5</color>
 </resources>

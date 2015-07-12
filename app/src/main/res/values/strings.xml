@@ -39,4 +39,10 @@
         <item>@string/ProgressPaddingSample</item>
         <item>@string/CustomSelectorSample</item>
     </array>
+
+    <string name="profile">PROFILE</string>
+    <string name="feed">FEED</string>
+    <string name="activity">主页</string>
+    <string name="settings">SETTINGS</string>
+
 </resources>
