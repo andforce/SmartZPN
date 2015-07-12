@@ -17,6 +17,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    //gradle assembleRelease
+    signingConfigs {
+        releaseConfig {
+            keyAlias 'SmartZpn'
+            keyPassword ''
+            storeFile file('smartzpn.keystore')
+            storePassword ''
+        }
+    }
 }
 
 dependencies {
