@@ -85,7 +85,12 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 }
             } else {
                 mConnBtn.showProgress();
+                LocalVpnService.IsRunning = false;
                 LocalVpnService.Instance.disconnectVPN();
+                stopService(new Intent(MenuActivity.this, LocalVpnService.class));
+                System.runFinalization();
+                System.exit(0);
+
             }
         }
     }
@@ -108,6 +113,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onConnectionChanged(boolean isConn) {
+        mConnBtn.stopShowProgress();
         if (isConn){
             mConnBtn.setComplete();
         } else {
