@@ -1,5 +1,7 @@
 package org.zarroboogs.smartzpn.loginzpn;
 
+import android.util.Log;
+
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -10,6 +12,7 @@ import org.json.JSONObject;
  * Created by wangdiyuan on 15-8-13.
  */
 public class LoginPresenterImpl implements LoginPresenter {
+    private static final String TAG = "LoginPresenterImpl";
     private ILoginView mILoginView;
     private LoginHelper mLoginHelper = new LoginHelper();
 
@@ -25,6 +28,7 @@ public class LoginPresenterImpl implements LoginPresenter {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String result = new String(responseBody);
+                Log.d(TAG,"LoginPresenterImpl->login->onSuccess "+ result);
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     String value = jsonObject.getString("token");
@@ -39,7 +43,8 @@ public class LoginPresenterImpl implements LoginPresenter {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
+                String result = new String(responseBody);
+                Log.d(TAG , "LoginPresenterImpl->login->onFailure "+ result + "  statusCode:" + statusCode);
             }
         });
     }
