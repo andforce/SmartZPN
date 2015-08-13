@@ -5,7 +5,7 @@ package org.zarroboogs.smartzpn.loginzpn;
  */
 public class Constants {
     public static class Url {
-        private static final String PROXY_ROOT_URL = "http://119.254.103.105/%s.spac";
+        private static final String PROXY_ROOT_URL = "http://119.254.103.105/*%s.spac";
         private static final String ROOT_URL = "https://api.zqt.pw/api/users/";
         public static final String LOGIN_URL = ROOT_URL + "login";
 
