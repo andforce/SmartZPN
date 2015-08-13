@@ -9,7 +9,7 @@
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar:///Volumes/HDD-FILE/copy_from_desktop/adt-bundle-mac-x86_64-20140702/sdk/extras/android/m2repository/com/android/support/appcompat-v7/22.1.1/appcompat-v7-22.1.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../android_sdk_linux/extras/android/m2repository/com/android/support/appcompat-v7/22.1.1/appcompat-v7-22.1.1-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
