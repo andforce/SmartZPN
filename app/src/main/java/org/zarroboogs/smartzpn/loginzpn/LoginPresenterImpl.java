@@ -7,6 +7,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.zarroboogs.smartzpn.utis.TokenUtils;
 
 /**
  * Created by wangdiyuan on 15-8-13.
@@ -21,7 +22,7 @@ public class LoginPresenterImpl implements LoginPresenter {
     }
 
     @Override
-    public void login(String email, String password, final OnLoginListener loginListener) {
+    public void login(String email, String password) {
         mILoginView.showProgress();
 
         mLoginHelper.login(email, password, new AsyncHttpResponseHandler() {
@@ -32,9 +33,9 @@ public class LoginPresenterImpl implements LoginPresenter {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     String value = jsonObject.getString("token");
-                    if (loginListener != null){
-                        loginListener.onLogin(value);
-                    }
+                    TokenUtils.setToken(value);
+
+                    requireProxy(value);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -49,8 +50,7 @@ public class LoginPresenterImpl implements LoginPresenter {
         });
     }
 
-    @Override
-    public void requireProxy(String token, final OnRequireProxyListener requireProxyListener) {
+    private void requireProxy(String token) {
         mILoginView.showProgress();
 
         mLoginHelper.requireProxy(token, new AsyncHttpResponseHandler() {
@@ -60,9 +60,9 @@ public class LoginPresenterImpl implements LoginPresenter {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     String value = jsonObject.getString("shortid");
-                    if (requireProxyListener != null){
-                        requireProxyListener.onRequireProxy(Constants.Url.buildProxy(value));
-                    }
+                    TokenUtils.setSpec(Constants.Url.buildProxy(value));
+                    mILoginView.switchToMainActivity();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

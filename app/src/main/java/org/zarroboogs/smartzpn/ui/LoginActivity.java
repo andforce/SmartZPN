@@ -1,5 +1,6 @@
 package org.zarroboogs.smartzpn.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
@@ -29,14 +30,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView{
         setContentView(R.layout.login_activity);
 
         mLoginPresenter = new LoginPresenterImpl(this);
-        mLoginPresenter.login("wangdiyuan@smartisan.com", "ZPN!@#456", new LoginPresenter.OnLoginListener() {
-            @Override
-            public void onLogin(String token) {
-                Toast.makeText(getApplicationContext(),token,Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
+        mLoginPresenter.login("", "");
     }
 
     @Override
@@ -51,6 +45,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView{
 
     @Override
     public void switchToMainActivity() {
-
+        Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
+        startActivity(intent);
     }
 }
