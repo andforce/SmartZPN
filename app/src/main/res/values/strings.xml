@@ -24,7 +24,11 @@
     <string name="specialThanks">SmartProxy@hedaode,GuillotineMenu-Android@Yalantis,circular-progress-button@dmytrodanylyk</string>
 
     <string name="about">关于</string>
-    <string name="loginTitle">登陆最前台</string>
+    <string name="loginTitle">登录最前台</string>
     <string name="login_email">邮箱</string>
     <string name="login_password">密码</string>
+
+    <string name="login_zpn">登录</string>
+    <string name="login_email_hint">输入邮箱</string>
+    <string name="login_pwd_hint">输入密码</string>
 </resources>
