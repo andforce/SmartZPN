@@ -34,18 +34,12 @@
       <file leaf-file-name="LoginActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/org/zarroboogs/smartzpn/ui/LoginActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.44868034">
-              <caret line="46" column="49" selection-start-line="46" selection-start-column="49" selection-end-line="46" selection-end-column="49" />
+            <state vertical-scroll-proportion="0.31867057">
+              <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
               <folding>
-                <element signature="e#2044#2186#0" expanded="true" />
-                <element signature="e#2185#2186#0" expanded="true" />
-                <element signature="e#2265#2411#0" expanded="true" />
-                <element signature="e#2410#2411#0" expanded="true" />
-                <element signature="e#2488#2626#0" expanded="true" />
-                <element signature="e#2625#2626#0" expanded="true" />
-                <element signature="e#3287#3313#0" expanded="true" />
-                <element signature="e#3573#3597#0" expanded="true" />
-                <element signature="e#3875#3903#0" expanded="true" />
+                <element signature="e#2859#2885#0" expanded="true" />
+                <element signature="e#3145#3169#0" expanded="true" />
+                <element signature="e#3447#3475#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -68,6 +62,19 @@
               <caret line="48" column="40" selection-start-line="48" selection-start-column="28" selection-end-line="48" selection-end-column="40" />
               <folding />
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="login_activity.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/login_activity.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-19.935484">
+              <caret line="70" column="36" selection-start-line="70" selection-start-column="36" selection-end-line="70" selection-end-column="36" />
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer">
+            <state />
           </provider>
         </entry>
       </file>
@@ -2542,7 +2549,15 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="5" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/org/zarroboogs/smartzpn/ui/LoginActivity.java</url>
+          <line>103</line>
+          <properties />
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="6" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -2552,15 +2567,9 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#2044#2186#0" expanded="true" />
-            <element signature="e#2185#2186#0" expanded="true" />
-            <element signature="e#2265#2411#0" expanded="true" />
-            <element signature="e#2410#2411#0" expanded="true" />
-            <element signature="e#2488#2626#0" expanded="true" />
-            <element signature="e#2625#2626#0" expanded="true" />
-            <element signature="e#3287#3313#0" expanded="true" />
-            <element signature="e#3573#3597#0" expanded="true" />
-            <element signature="e#3875#3903#0" expanded="true" />
+            <element signature="e#2859#2885#0" expanded="true" />
+            <element signature="e#3145#3169#0" expanded="true" />
+            <element signature="e#3447#3475#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2587,10 +2596,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="72" column="37" selection-start-line="72" selection-start-column="29" selection-end-line="72" selection-end-column="37" />
-          <folding>
-            <element signature="e#3355#3378#0" expanded="true" />
-            <element signature="e#3405#3427#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
       <provider editor-type-id="android-designer">
@@ -2602,15 +2608,9 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="31" column="29" selection-start-line="31" selection-start-column="24" selection-end-line="31" selection-end-column="29" />
           <folding>
-            <element signature="e#2044#2186#0" expanded="true" />
-            <element signature="e#2185#2186#0" expanded="true" />
-            <element signature="e#2265#2411#0" expanded="true" />
-            <element signature="e#2410#2411#0" expanded="true" />
-            <element signature="e#2488#2626#0" expanded="true" />
-            <element signature="e#2625#2626#0" expanded="true" />
-            <element signature="e#3287#3313#0" expanded="true" />
-            <element signature="e#3573#3597#0" expanded="true" />
-            <element signature="e#3875#3903#0" expanded="true" />
+            <element signature="e#2859#2885#0" expanded="true" />
+            <element signature="e#3145#3169#0" expanded="true" />
+            <element signature="e#3447#3475#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2643,15 +2643,9 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="23" column="46" selection-start-line="23" selection-start-column="32" selection-end-line="23" selection-end-column="46" />
           <folding>
-            <element signature="e#2044#2186#0" expanded="true" />
-            <element signature="e#2185#2186#0" expanded="true" />
-            <element signature="e#2265#2411#0" expanded="true" />
-            <element signature="e#2410#2411#0" expanded="true" />
-            <element signature="e#2488#2626#0" expanded="true" />
-            <element signature="e#2625#2626#0" expanded="true" />
-            <element signature="e#3287#3313#0" expanded="true" />
-            <element signature="e#3573#3597#0" expanded="true" />
-            <element signature="e#3875#3903#0" expanded="true" />
+            <element signature="e#2859#2885#0" expanded="true" />
+            <element signature="e#3145#3169#0" expanded="true" />
+            <element signature="e#3447#3475#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2661,15 +2655,9 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="23" column="46" selection-start-line="23" selection-start-column="32" selection-end-line="23" selection-end-column="46" />
           <folding>
-            <element signature="e#2044#2186#0" expanded="true" />
-            <element signature="e#2185#2186#0" expanded="true" />
-            <element signature="e#2265#2411#0" expanded="true" />
-            <element signature="e#2410#2411#0" expanded="true" />
-            <element signature="e#2488#2626#0" expanded="true" />
-            <element signature="e#2625#2626#0" expanded="true" />
-            <element signature="e#3287#3313#0" expanded="true" />
-            <element signature="e#3573#3597#0" expanded="true" />
-            <element signature="e#3875#3903#0" expanded="true" />
+            <element signature="e#2859#2885#0" expanded="true" />
+            <element signature="e#3145#3169#0" expanded="true" />
+            <element signature="e#3447#3475#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2678,10 +2666,7 @@
       <provider editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#3355#3378#0" expanded="true" />
-            <element signature="e#3405#3427#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
       <provider selected="true" editor-type-id="android-designer">
@@ -2769,20 +2754,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/login_activity.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-19.935484">
-          <caret line="70" column="36" selection-start-line="70" selection-start-column="36" selection-end-line="70" selection-end-column="36" />
-          <folding>
-            <element signature="e#3355#3378#0" expanded="true" />
-            <element signature="e#3405#3427#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-21.533333">
@@ -2807,20 +2778,25 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/login_activity.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-19.935484">
+          <caret line="70" column="36" selection-start-line="70" selection-start-column="36" selection-end-line="70" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/org/zarroboogs/smartzpn/ui/LoginActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.44868034">
-          <caret line="46" column="49" selection-start-line="46" selection-start-column="49" selection-end-line="46" selection-end-column="49" />
+        <state vertical-scroll-proportion="0.31867057">
+          <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
           <folding>
-            <element signature="e#2044#2186#0" expanded="true" />
-            <element signature="e#2185#2186#0" expanded="true" />
-            <element signature="e#2265#2411#0" expanded="true" />
-            <element signature="e#2410#2411#0" expanded="true" />
-            <element signature="e#2488#2626#0" expanded="true" />
-            <element signature="e#2625#2626#0" expanded="true" />
-            <element signature="e#3287#3313#0" expanded="true" />
-            <element signature="e#3573#3597#0" expanded="true" />
-            <element signature="e#3875#3903#0" expanded="true" />
+            <element signature="e#2859#2885#0" expanded="true" />
+            <element signature="e#3145#3169#0" expanded="true" />
+            <element signature="e#3447#3475#0" expanded="true" />
           </folding>
         </state>
       </provider>

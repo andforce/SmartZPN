@@ -24,7 +24,7 @@ import org.zarroboogs.smartzpn.utis.DeviceUtils;
 /**
  * Created by andforce on 15/7/12.
  */
-public class LoginActivity extends AppCompatActivity implements ILoginView, View.OnClickListener{
+public class LoginActivity extends AppCompatActivity implements ILoginView, View.OnClickListener {
 
     private static String TAG = "LoginActivity";
     private LoginPresenter mLoginPresenter;
@@ -49,7 +49,6 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, View
         mEmailEditText.setOnClickListener(this);
         mPassWordEditText = (MaterialEditText) findViewById(R.id.password);
         mPassWordEditText.setOnClickListener(this);
-
 
         mLoginPresenter = new LoginPresenterImpl(this);
     }
@@ -84,24 +83,24 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, View
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.connectionBtn){
-            if (DeviceUtils.checkNet(getApplicationContext())){
+        if (id == R.id.connectionBtn) {
+            if (DeviceUtils.checkNet(getApplicationContext())) {
                 String email = mEmailEditText.getText().toString();
-                if (TextUtils.isEmpty(email)){
+                if (TextUtils.isEmpty(email)) {
                     Toast.makeText(getApplicationContext(), R.string.login_email_empty, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 String password = mPassWordEditText.getText().toString();
-                if (TextUtils.isEmpty(password)){
+                if (TextUtils.isEmpty(password)) {
                     Toast.makeText(getApplicationContext(), R.string.login_pwd_empty, Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Log.d(TAG, "email: " + email + " Pwd: " + password );
+                Log.d(TAG, "email: " + email + " Pwd: " + password);
                 mLoginPresenter.login(email, password);
-            } else{
+            } else {
                 Toast.makeText(getApplicationContext(), R.string.login_network_error, Toast.LENGTH_SHORT).show();
             }
-        } else if (id == R.id.username || id == R.id.password){
+        } else if (id == R.id.username || id == R.id.password) {
             mProgressButton.setIdle();
         }
 
