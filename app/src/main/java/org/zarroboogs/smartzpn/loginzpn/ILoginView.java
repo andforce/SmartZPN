@@ -7,5 +7,7 @@ public interface ILoginView {
     public void showProgress();
     public void hideProgress();
 
+    public void showFailed();
+
     public void switchToMainActivity();
 }

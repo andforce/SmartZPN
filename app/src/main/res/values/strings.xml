@@ -31,4 +31,10 @@
     <string name="login_zpn">登录</string>
     <string name="login_email_hint">输入邮箱</string>
     <string name="login_pwd_hint">输入密码</string>
+    <string name="login_success">成功</string>
+    <string name="login_failed">失败</string>
+
+    <string name="login_network_error">未联网</string>
+    <string name="login_email_empty">邮箱为空</string>
+    <string name="login_pwd_empty">密码为空</string>
 </resources>

@@ -46,6 +46,8 @@ public class LoginPresenterImpl implements LoginPresenter {
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 String result = new String(responseBody);
                 Log.d(TAG , "LoginPresenterImpl->login->onFailure "+ result + "  statusCode:" + statusCode);
+                mILoginView.hideProgress();
+                mILoginView.showFailed();
             }
         });
     }

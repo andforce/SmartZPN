@@ -2,8 +2,11 @@ package org.zarroboogs.smartzpn.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -16,6 +19,7 @@ import org.zarroboogs.smartzpn.loginzpn.ILoginView;
 import org.zarroboogs.smartzpn.loginzpn.LoginPresenter;
 import org.zarroboogs.smartzpn.loginzpn.LoginPresenterImpl;
 import org.zarroboogs.smartzpn.ui.widget.ProgressButton;
+import org.zarroboogs.smartzpn.utis.DeviceUtils;
 
 /**
  * Created by andforce on 15/7/12.
@@ -42,7 +46,9 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, View
         mProgressButton.setOnClickListener(this);
 
         mEmailEditText = (MaterialEditText) findViewById(R.id.username);
+        mEmailEditText.setOnClickListener(this);
         mPassWordEditText = (MaterialEditText) findViewById(R.id.password);
+        mPassWordEditText.setOnClickListener(this);
 
 
         mLoginPresenter = new LoginPresenterImpl(this);
@@ -55,7 +61,12 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, View
 
     @Override
     public void hideProgress() {
+        mProgressButton.stopShowProgress();
+    }
 
+    @Override
+    public void showFailed() {
+        mProgressButton.setError();
     }
 
     @Override
@@ -72,9 +83,27 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, View
      */
     @Override
     public void onClick(View v) {
-        String email = mEmailEditText.getText().toString();
-        String password = mPassWordEditText.getText().toString();
-        Log.d(TAG, "email: " + email + " Pwd: " + password );
-        mLoginPresenter.login(email, password);
+        int id = v.getId();
+        if (id == R.id.connectionBtn){
+            if (DeviceUtils.checkNet(getApplicationContext())){
+                String email = mEmailEditText.getText().toString();
+                if (TextUtils.isEmpty(email)){
+                    Toast.makeText(getApplicationContext(), R.string.login_email_empty, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                String password = mPassWordEditText.getText().toString();
+                if (TextUtils.isEmpty(password)){
+                    Toast.makeText(getApplicationContext(), R.string.login_pwd_empty, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Log.d(TAG, "email: " + email + " Pwd: " + password );
+                mLoginPresenter.login(email, password);
+            } else{
+                Toast.makeText(getApplicationContext(), R.string.login_network_error, Toast.LENGTH_SHORT).show();
+            }
+        } else if (id == R.id.username || id == R.id.password){
+            mProgressButton.setIdle();
+        }
+
     }
 }
