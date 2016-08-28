@@ -15,15 +15,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.zarroboogs.smartzpn.tcpip.CommonMethods;
 import org.zarroboogs.smartzpn.tunnel.Config;
 import org.zarroboogs.smartzpn.tunnel.httpconnect.HttpConnectConfig;
 import org.zarroboogs.smartzpn.tunnel.shadowsocks.ShadowsocksConfig;
+
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 public class ProxyConfig {
@@ -227,25 +227,35 @@ public class ProxyConfig {
     }
     
     private String[] downloadConfig(String url) throws Exception{
-    	try {
-    		HttpClient client=new DefaultHttpClient();
-        	HttpGet requestGet=new HttpGet(url);
-        	
-        	requestGet.addHeader("X-Android-MODEL", Build.MODEL);
-        	requestGet.addHeader("X-Android-SDK_INT",Integer.toString(Build.VERSION.SDK_INT));
-        	requestGet.addHeader("X-Android-RELEASE", Build.VERSION.RELEASE);
-        	requestGet.addHeader("X-App-Version", AppVersion);
-        	requestGet.addHeader("X-App-Install-ID", AppInstallID);
-        	requestGet.setHeader("User-Agent", System.getProperty("http.agent"));
-            HttpResponse response=client.execute(requestGet);
-            
-            String configString=EntityUtils.toString(response.getEntity(),"UTF-8");
-            String[] lines=configString.split("\\n");
-            return lines;
-    	}
-    	catch(Exception e){
-    		throw new Exception(String.format("Download config file from %s failed.", url));
-    	}
+		try {
+			OkHttpClient okHttpClient = new OkHttpClient();
+			Request request = new Request.Builder().url(url).get().build();
+			Call call = okHttpClient.newCall(request);
+			Response response = call.execute();
+			return response.body().string().split("\\n");
+		} catch (Exception e){
+			throw new Exception(String.format("Download config file from %s failed.", url));
+		}
+
+//    	try {
+//    		HttpClient client=new DefaultHttpClient();
+//        	HttpGet requestGet=new HttpGet(url);
+//
+//        	requestGet.addHeader("X-Android-MODEL", Build.MODEL);
+//        	requestGet.addHeader("X-Android-SDK_INT",Integer.toString(Build.VERSION.SDK_INT));
+//        	requestGet.addHeader("X-Android-RELEASE", Build.VERSION.RELEASE);
+//        	requestGet.addHeader("X-App-Version", AppVersion);
+//        	requestGet.addHeader("X-App-Install-ID", AppInstallID);
+//        	requestGet.setHeader("User-Agent", System.getProperty("http.agent"));
+//            HttpResponse response=client.execute(requestGet);
+//
+//            String configString=EntityUtils.toString(response.getEntity(),"UTF-8");
+//            String[] lines=configString.split("\\n");
+//            return lines;
+//    	}
+//    	catch(Exception e){
+//    		throw new Exception(String.format("Download config file from %s failed.", url));
+//    	}
     }
     
     private String[] readConfigFromFile(String path) throws Exception {

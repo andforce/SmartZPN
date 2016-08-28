@@ -12,13 +12,6 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity
-            android:name="org.zarroboogs.smartzpn.ui.LoginActivity"
-            android:excludeFromRecents="true"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait">
-
-        </activity>
 
         <activity
             android:name="org.zarroboogs.smartzpn.ui.MenuActivity"
