@@ -30,7 +30,7 @@ public class NatSessionManager {
     
 	public static NatSession createSession(int portKey,int remoteIP,short remotePort){
 		if(Sessions.size()>MAX_SESSION_COUNT){
-			clearExpiredSessions();//������ڵĻỰ��
+			clearExpiredSessions();
 		}
  
 		NatSession session=new NatSession();

@@ -9,7 +9,7 @@ public class CommonMethods {
 	public static InetAddress ipIntToInet4Address(int ip){
 		byte[] ipAddress=new byte[4];
 		writeInt(ipAddress, 0, ip);
-        try {
+		try {
 			return  Inet4Address.getByAddress(ipAddress);
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -17,12 +17,12 @@ public class CommonMethods {
 			return null;
 		}
 	}
-	
+
 	public static String ipIntToString(int ip) {
 		return String.format("%s.%s.%s.%s", (ip >> 24) & 0x00FF,
 				(ip >> 16) & 0x00FF, (ip >> 8) & 0x00FF, ip & 0x00FF);
 	}
-	
+
 	public static String ipBytesToString(byte[] ip) {
 		return String.format("%s.%s.%s.%s", ip[0] & 0x00FF,ip[1] & 0x00FF,ip[2] & 0x00FF,ip[3] & 0x00FF);
 	}
@@ -60,7 +60,7 @@ public class CommonMethods {
 		data[offset + 1] = (byte) (value);
 	}
 
-	// �����ֽ�˳���������ֽ�˳���ת��
+	// 网络字节顺序与主机字节顺序的转换
 
 	public static short htons(short u) {
 		int r = ((u & 0xFFFF) << 8) | ((u & 0xFFFF) >> 8);
@@ -88,7 +88,7 @@ public class CommonMethods {
 		return r;
 	}
 
-	// ����У���
+	// 计算校验和
 	public static short checksum(long sum, byte[] buf, int offset, int len) {
 		sum += getsum(buf, offset, len);
 		while ((sum >> 16) > 0)
@@ -111,53 +111,53 @@ public class CommonMethods {
 		return sum;
 	}
 
-	// ����IP���У���
+	// 计算IP包的校验和
 	public static boolean ComputeIPChecksum(IPHeader ipHeader) {
 		short oldCrc = ipHeader.getCrc();
-		ipHeader.setCrc((short) 0);// ����ǰ����
+		ipHeader.setCrc((short) 0);// 计算前置零
 		short newCrc = CommonMethods.checksum(0, ipHeader.m_Data,
 				ipHeader.m_Offset, ipHeader.getHeaderLength());
 		ipHeader.setCrc(newCrc);
 		return oldCrc == newCrc;
 	}
 
-	// ����TCP��UDP��У���
+	// 计算TCP或UDP的校验和
 	public static boolean ComputeTCPChecksum(IPHeader ipHeader,TCPHeader tcpHeader) {
-		ComputeIPChecksum(ipHeader);//����IPУ���
-		int ipData_len = ipHeader.getTotalLength() - ipHeader.getHeaderLength();// IP��ݳ���
+		ComputeIPChecksum(ipHeader);//计算IP校验和
+		int ipData_len = ipHeader.getTotalLength() - ipHeader.getHeaderLength();// IP数据长度
 		if (ipData_len < 0)
 			return false;
-		// ����Ϊα�ײ���
+		// 计算为伪首部和
 		long sum = getsum(ipHeader.m_Data, ipHeader.m_Offset
 				+ IPHeader.offset_src_ip, 8);
 		sum += ipHeader.getProtocol()&0xFF;
 		sum += ipData_len;
 
 		short oldCrc = tcpHeader.getCrc();
-		tcpHeader.setCrc((short) 0);// ����ǰ��0
+		tcpHeader.setCrc((short) 0);// 计算前置0
 
-		short newCrc = checksum(sum, tcpHeader.m_Data, tcpHeader.m_Offset, ipData_len);// ����У���
+		short newCrc = checksum(sum, tcpHeader.m_Data, tcpHeader.m_Offset, ipData_len);// 计算校验和
 
 		tcpHeader.setCrc(newCrc);
 		return oldCrc == newCrc;
 	}
 
-	// ����TCP��UDP��У���
+	// 计算TCP或UDP的校验和
 	public static boolean ComputeUDPChecksum(IPHeader ipHeader,UDPHeader udpHeader) {
-		ComputeIPChecksum(ipHeader);//����IPУ���
-		int ipData_len = ipHeader.getTotalLength() - ipHeader.getHeaderLength();// IP��ݳ���
+		ComputeIPChecksum(ipHeader);//计算IP校验和
+		int ipData_len = ipHeader.getTotalLength() - ipHeader.getHeaderLength();// IP数据长度
 		if (ipData_len < 0)
 			return false;
-		// ����Ϊα�ײ���
+		// 计算为伪首部和
 		long sum = getsum(ipHeader.m_Data, ipHeader.m_Offset
 				+ IPHeader.offset_src_ip, 8);
 		sum += ipHeader.getProtocol()&0xFF;
 		sum += ipData_len;
 
 		short oldCrc = udpHeader.getCrc();
-		udpHeader.setCrc((short) 0);// ����ǰ��0
+		udpHeader.setCrc((short) 0);// 计算前置0
 
-		short newCrc = checksum(sum, udpHeader.m_Data, udpHeader.m_Offset, ipData_len);// ����У���
+		short newCrc = checksum(sum, udpHeader.m_Data, udpHeader.m_Offset, ipData_len);// 计算校验和
 
 		udpHeader.setCrc(newCrc);
 		return oldCrc == newCrc;

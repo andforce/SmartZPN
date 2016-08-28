@@ -1,6 +1,5 @@
 package org.zarroboogs.smartzpn.tcpip;
 
-
 public class TCPHeader {
 
 	public static final int FIN = 1;
@@ -10,15 +9,15 @@ public class TCPHeader {
 	public static final int ACK = 16;
 	public static final int URG = 32;
 
-	static final short offset_src_port = 0; // 16λԴ�˿�
-	static final short offset_dest_port = 2; // 16λĿ�Ķ˿�
-	static final int offset_seq = 4; // 32λ���к�
-	static final int offset_ack = 8; // 32λȷ�Ϻ�
-	static final byte offset_lenres = 12; // 4λ�ײ�����/4λ������
-	static final byte offset_flag = 13; // 6λ��־λ
-	static final short offset_win = 14; // 16λ���ڴ�С
-	static final short offset_crc = 16; // 16λУ���
-	static final short offset_urp = 18; // 16λ�������ƫ����
+	static final short offset_src_port = 0; // 16位源端口
+	static final short offset_dest_port = 2; // 16位目的端口
+	static final int offset_seq = 4; // 32位序列号
+	static final int offset_ack = 8; // 32位确认号
+	static final byte offset_lenres = 12; // 4位首部长度/4位保留字
+	static final byte offset_flag = 13; // 6位标志位
+	static final short offset_win = 14; // 16位窗口大小
+	static final short offset_crc = 16; // 16位校验和
+	static final short offset_urp = 18; // 16位紧急数据偏移量
 
 	public byte[] m_Data;
 	public int m_Offset;
@@ -29,8 +28,8 @@ public class TCPHeader {
 	}
 
 	public int getHeaderLength(){
-		 int lenres=m_Data[m_Offset+offset_lenres]&0xFF;
-		 return (lenres >> 4) * 4;
+		int lenres=m_Data[m_Offset+offset_lenres]&0xFF;
+		return (lenres >> 4) * 4;
 	}
 
 	public short getSourcePort() {
@@ -79,9 +78,9 @@ public class TCPHeader {
 				(getFlags()&RST)==RST?"RST ":"",
 				(getFlags()&FIN)==FIN?"FIN ":"",
 				(getFlags()&URG)==URG?"URG ":"",
-                 getSourcePort()&0xFFFF,
-                 getDestinationPort()&0xFFFF,
-                 getSeqID(),
-                 getAckID());
+				getSourcePort()&0xFFFF,
+				getDestinationPort()&0xFFFF,
+				getSeqID(),
+				getAckID());
 	}
 }
