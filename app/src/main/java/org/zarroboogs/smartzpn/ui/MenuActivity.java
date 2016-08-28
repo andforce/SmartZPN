@@ -19,13 +19,13 @@ import org.zarroboogs.smartzpn.utis.TokenUtils;
 
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener,LocalVpnService.onStatusChangedListener{
 
-    private Toolbar mToolbar;
-    private ProgressButton mConnBtn;
-    private GuillotineAnimation mCuillotine;
-    private static final int START_VPN_SERVICE_REQUEST_CODE = 1985;
+        private Toolbar mToolbar;
+        private ProgressButton mConnBtn;
+        private GuillotineAnimation mCuillotine;
+        private static final int START_VPN_SERVICE_REQUEST_CODE = 1985;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         //透明状态栏

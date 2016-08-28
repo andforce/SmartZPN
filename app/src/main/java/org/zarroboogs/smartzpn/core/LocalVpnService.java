@@ -86,6 +86,8 @@ public class LocalVpnService extends VpnService implements Runnable {
 	public interface onStatusChangedListener {
 		public void onStatusChanged(String status,Boolean isRunning);
 		public void onLogReceived(String logString);
+		public void onConnectionChanged(boolean isConn);
+		public void onConnectionError();
 	}
 
 	public static void addOnStatusChangedListener(onStatusChangedListener listener) {
@@ -98,6 +100,28 @@ public class LocalVpnService extends VpnService implements Runnable {
 		if (m_OnStatusChangedListeners.containsKey(listener)) {
 			m_OnStatusChangedListeners.remove(listener);
 		}
+	}
+
+	private void onConnectionError(){
+		m_Handler.post(new Runnable() {
+			@Override
+			public void run() {
+				for (Map.Entry<onStatusChangedListener, Object> entry : m_OnStatusChangedListeners.entrySet()) {
+					entry.getKey().onConnectionError();
+				}
+			}
+		});
+	}
+
+	private void onConnectionChanged(final boolean isConn){
+		m_Handler.post(new Runnable() {
+			@Override
+			public void run() {
+				for (Map.Entry<onStatusChangedListener, Object> entry : m_OnStatusChangedListeners.entrySet()) {
+					entry.getKey().onConnectionChanged(isConn);
+				}
+			}
+		});
 	}
 
 	private void onStatusChanged(final String status, final boolean isRunning) {
@@ -197,6 +221,7 @@ public class LocalVpnService extends VpnService implements Runnable {
 
 						IsRunning=false;
 						onStatusChanged(errString, false);
+						onConnectionError();
 						continue;
 					}
 
@@ -214,9 +239,11 @@ public class LocalVpnService extends VpnService implements Runnable {
 			}
 		} catch (InterruptedException e) {
 			System.out.println(e);
+			onConnectionError();
 		} catch (Exception e) {
 			e.printStackTrace();
 			writeLog("Fatal error: %s",e.toString());
+			onConnectionError();
 		} finally {
 			writeLog("SmartProxy terminated.");
 			dispose();
@@ -380,6 +407,7 @@ public class LocalVpnService extends VpnService implements Runnable {
 		builder.setSession(ProxyConfig.Instance.getSessionName());
 		ParcelFileDescriptor pfdDescriptor = builder.establish();
 		onStatusChanged(ProxyConfig.Instance.getSessionName()+getString(R.string.vpn_connected_status), true);
+		onConnectionChanged(true);
 		return pfdDescriptor;
 	}
 
@@ -393,6 +421,7 @@ public class LocalVpnService extends VpnService implements Runnable {
 			// ignore
 		}
 		onStatusChanged(ProxyConfig.Instance.getSessionName()+getString(R.string.vpn_disconnected_status), false);
+		onConnectionChanged(false);
 		this.m_VPNOutputStream = null;
 	}
 
