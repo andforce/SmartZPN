@@ -343,7 +343,7 @@ public class ProxyConfig {
 
 		}
 
-        //����Ĭ�ϴ��?
+		//查找默认代理。
         if(m_ProxyList.size()==0){
         	tryAddProxy(lines);
         }
