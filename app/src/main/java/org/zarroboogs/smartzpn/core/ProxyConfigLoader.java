@@ -26,13 +26,11 @@ import okhttp3.Response;
 public class ProxyConfigLoader {
     private static final ProxyConfigLoader sInstance = new ProxyConfigLoader();
     public final static boolean IS_DEBUG = true;
-    public static String AppInstallID;
-    public static String AppVersion;
     public final static int FAKE_NETWORK_MASK = CommonMethods.ipStringToInt("255.255.0.0");
     public final static int FAKE_NETWORK_IP = CommonMethods.ipStringToInt("10.231.0.0");
 
     private ArrayList<IPAddress> mIPList;
-    private ArrayList<IPAddress> mDnsList;
+    private ArrayList<IPAddress> mDnsServers;
     private ArrayList<IPAddress> mRouteList;
     private ArrayList<Config> mProxyConfigList;
     private HashMap<String, Boolean> mDomainMap;
@@ -76,17 +74,13 @@ public class ProxyConfigLoader {
 
         @Override
         public boolean equals(Object o) {
-            if (o == null) {
-                return false;
-            } else {
-                return this.toString().equals(o.toString());
-            }
+            return o != null && this.toString().equals(o.toString());
         }
     }
 
     public ProxyConfigLoader() {
         mIPList = new ArrayList<IPAddress>();
-        mDnsList = new ArrayList<IPAddress>();
+        mDnsServers = new ArrayList<IPAddress>();
         mRouteList = new ArrayList<IPAddress>();
         mProxyConfigList = new ArrayList<Config>();
         mDomainMap = new HashMap<String, Boolean>();
@@ -145,8 +139,8 @@ public class ProxyConfigLoader {
         }
     }
 
-    public ArrayList<IPAddress> getDnsList() {
-        return mDnsList;
+    public ArrayList<IPAddress> getDnsServers() {
+        return mDnsServers;
     }
 
     public ArrayList<IPAddress> getRouteList() {
@@ -269,7 +263,7 @@ public class ProxyConfigLoader {
         }
 
         mIPList.clear();
-        mDnsList.clear();
+        mDnsServers.clear();
         mRouteList.clear();
         mProxyConfigList.clear();
         mDomainMap.clear();
@@ -293,7 +287,7 @@ public class ProxyConfigLoader {
                             addIPAddressToList(items, 1, mIPList);
                             break;
                         case "dns":
-                            addIPAddressToList(items, 1, mDnsList);
+                            addIPAddressToList(items, 1, mDnsServers);
                             break;
                         case "route":
                             addIPAddressToList(items, 1, mRouteList);

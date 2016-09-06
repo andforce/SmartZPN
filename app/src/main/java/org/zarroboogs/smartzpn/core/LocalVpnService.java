@@ -41,13 +41,13 @@ public class LocalVpnService extends VpnService implements Runnable {
     private static ConcurrentHashMap<onStatusChangedListener, Object> m_OnStatusChangedListeners = new ConcurrentHashMap<onStatusChangedListener, Object>();
 
     private Thread m_VPNThread;
-    private ParcelFileDescriptor m_VPNInterface;
-    private TcpProxyServer m_TcpProxyServer;
+    private ParcelFileDescriptor mVPNInterface;
+    private TcpProxyServer mTcpProxyServer;
     private DnsProxy m_DnsProxy;
     private FileOutputStream m_VPNOutputStream;
 
-    private byte[] m_Packet;
-    private IPHeader m_IPHeader;
+    private byte[] mPacket;
+    private IPHeader mIPHeader;
     private TCPHeader m_TCPHeader;
     private UDPHeader m_UDPHeader;
     private ByteBuffer m_DNSBuffer;
@@ -55,17 +55,19 @@ public class LocalVpnService extends VpnService implements Runnable {
     private long m_SentBytes;
     private long m_ReceivedBytes;
 
+
     public LocalVpnService() {
         ID++;
         m_Handler = new Handler();
-        m_Packet = new byte[20000];
-        m_IPHeader = new IPHeader(m_Packet, 0);
-        m_TCPHeader = new TCPHeader(m_Packet, 20);
-        m_UDPHeader = new UDPHeader(m_Packet, 20);
-        m_DNSBuffer = ((ByteBuffer) ByteBuffer.wrap(m_Packet).position(28)).slice();
+        mPacket = new byte[20000];
+        mIPHeader = new IPHeader(mPacket, 0);
+        m_TCPHeader = new TCPHeader(mPacket, 20);
+        m_UDPHeader = new UDPHeader(mPacket, 20);
+        m_DNSBuffer = ((ByteBuffer) ByteBuffer.wrap(mPacket).position(28)).slice();
         Instance = this;
 
         System.out.printf("New VPNService(%d)\n", ID);
+
     }
 
     @Override
@@ -159,47 +161,15 @@ public class LocalVpnService extends VpnService implements Runnable {
         }
     }
 
-    String getAppInstallID() {
-        SharedPreferences preferences = getSharedPreferences("SmartProxy", MODE_PRIVATE);
-        String appInstallID = preferences.getString("AppInstallID", null);
-        if (appInstallID == null || appInstallID.isEmpty()) {
-            appInstallID = UUID.randomUUID().toString();
-            Editor editor = preferences.edit();
-            editor.putString("AppInstallID", appInstallID);
-            editor.commit();
-        }
-        return appInstallID;
-    }
-
-    String getVersionName() {
-        try {
-            PackageManager packageManager = getPackageManager();
-            // getPackageName()是你当前类的包名，0代表是获取版本信息
-            PackageInfo packInfo = packageManager.getPackageInfo(getPackageName(), 0);
-            String version = packInfo.versionName;
-            return version;
-        } catch (Exception e) {
-            return "0.0";
-        }
-    }
-
     @Override
     public synchronized void run() {
         try {
-            System.out.printf("VPNService(%s) work thread is runing...\n", ID);
-
-            ProxyConfigLoader.AppInstallID = getAppInstallID();//获取安装ID
-            ProxyConfigLoader.AppVersion = getVersionName();//获取版本号
-            System.out.printf("AppInstallID: %s\n", ProxyConfigLoader.AppInstallID);
-            writeLog("Android version: %s", Build.VERSION.RELEASE);
-            writeLog("App version: %s", ProxyConfigLoader.AppVersion);
-
 
             ChinaIpMaskManager.loadFromFile(getResources().openRawResource(R.raw.ipmask));//加载中国的IP段，用于IP分流。
             waitUntilPreapred();//检查是否准备完毕。
 
-            m_TcpProxyServer = new TcpProxyServer(0);
-            m_TcpProxyServer.start();
+            mTcpProxyServer = new TcpProxyServer(0);
+            mTcpProxyServer.start();
             writeLog("LocalTcpServer started.");
 
             m_DnsProxy = new DnsProxy();
@@ -254,17 +224,17 @@ public class LocalVpnService extends VpnService implements Runnable {
     }
 
     private void runVPN() throws Exception {
-        this.m_VPNInterface = establishVPN();
-        this.m_VPNOutputStream = new FileOutputStream(m_VPNInterface.getFileDescriptor());
-        FileInputStream in = new FileInputStream(m_VPNInterface.getFileDescriptor());
+        this.mVPNInterface = establishVPN();
+        this.m_VPNOutputStream = new FileOutputStream(mVPNInterface.getFileDescriptor());
+        FileInputStream in = new FileInputStream(mVPNInterface.getFileDescriptor());
         int size = 0;
         while (size != -1 && IsRunning) {
-            while ((size = in.read(m_Packet)) > 0 && IsRunning) {
-                if (m_DnsProxy.Stopped || m_TcpProxyServer.Stopped) {
+            while ((size = in.read(mPacket)) > 0 && IsRunning) {
+                if (m_DnsProxy.Stopped || mTcpProxyServer.Stopped) {
                     in.close();
                     throw new Exception("LocalServer stopped.");
                 }
-                onIPPacketReceived(m_IPHeader, size);
+                onIPPacketReceived(mIPHeader, size);
             }
             Thread.sleep(100);
         }
@@ -278,7 +248,7 @@ public class LocalVpnService extends VpnService implements Runnable {
                 TCPHeader tcpHeader = m_TCPHeader;
                 tcpHeader.m_Offset = ipHeader.getHeaderLength();
                 if (ipHeader.getSourceIP() == LOCAL_IP) {
-                    if (tcpHeader.getSourcePort() == m_TcpProxyServer.Port) {// 收到本地TCP服务器数据
+                    if (tcpHeader.getSourcePort() == mTcpProxyServer.Port) {// 收到本地TCP服务器数据
                         NatSession session = NatSessionManager.getSession(tcpHeader.getDestinationPort());
                         if (session != null) {
                             ipHeader.setSourceIP(ipHeader.getDestinationIP());
@@ -320,7 +290,7 @@ public class LocalVpnService extends VpnService implements Runnable {
                         // 转发给本地TCP服务器
                         ipHeader.setSourceIP(ipHeader.getDestinationIP());
                         ipHeader.setDestinationIP(LOCAL_IP);
-                        tcpHeader.setDestinationPort(m_TcpProxyServer.Port);
+                        tcpHeader.setDestinationPort(mTcpProxyServer.Port);
 
                         CommonMethods.ComputeTCPChecksum(ipHeader, tcpHeader);
                         m_VPNOutputStream.write(ipHeader.m_Data, ipHeader.m_Offset, size);
@@ -367,7 +337,7 @@ public class LocalVpnService extends VpnService implements Runnable {
         if (ProxyConfigLoader.IS_DEBUG)
             System.out.printf("addAddress: %s/%d\n", ipAddress.Address, ipAddress.PrefixLength);
 
-        for (ProxyConfigLoader.IPAddress dns : ProxyConfigLoader.getsInstance().getDnsList()) {
+        for (ProxyConfigLoader.IPAddress dns : ProxyConfigLoader.getsInstance().getDnsServers()) {
             builder.addDnsServer(dns.Address);
             if (ProxyConfigLoader.IS_DEBUG)
                 System.out.printf("addDnsServer: %s\n", dns.Address);
@@ -409,6 +379,8 @@ public class LocalVpnService extends VpnService implements Runnable {
 
         builder.setSession(ProxyConfigLoader.getsInstance().getSessionName());
         ParcelFileDescriptor pfdDescriptor = builder.establish();
+
+
         onStatusChanged(ProxyConfigLoader.getsInstance().getSessionName() + getString(R.string.vpn_connected_status), true);
         onConnectionChanged(true);
         return pfdDescriptor;
@@ -416,9 +388,9 @@ public class LocalVpnService extends VpnService implements Runnable {
 
     public void disconnectVPN() {
         try {
-            if (m_VPNInterface != null) {
-                m_VPNInterface.close();
-                m_VPNInterface = null;
+            if (mVPNInterface != null) {
+                mVPNInterface.close();
+                mVPNInterface = null;
             }
         } catch (Exception e) {
             // ignore
@@ -433,9 +405,9 @@ public class LocalVpnService extends VpnService implements Runnable {
         disconnectVPN();
 
         // 停止TcpServer
-        if (m_TcpProxyServer != null) {
-            m_TcpProxyServer.stop();
-            m_TcpProxyServer = null;
+        if (mTcpProxyServer != null) {
+            mTcpProxyServer.stop();
+            mTcpProxyServer = null;
             writeLog("LocalTcpServer stopped.");
         }
 

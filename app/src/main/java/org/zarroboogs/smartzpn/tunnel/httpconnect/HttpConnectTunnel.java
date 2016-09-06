@@ -1,5 +1,11 @@
 package org.zarroboogs.smartzpn.tunnel.httpconnect;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+
+import org.zarroboogs.smartzpn.SmartZpnApplication;
 import org.zarroboogs.smartzpn.core.ProxyConfigLoader;
 import org.zarroboogs.smartzpn.tunnel.Tunnel;
 
@@ -7,6 +13,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.Selector;
 import java.util.Locale;
+import java.util.UUID;
 
 public class HttpConnectTunnel extends Tunnel {
 
@@ -24,13 +31,37 @@ public class HttpConnectTunnel extends Tunnel {
                 m_DestAddress.getHostName(),
                 m_DestAddress.getPort(),
                 ProxyConfigLoader.getsInstance().getUserAgent(),
-                ProxyConfigLoader.AppInstallID);
+                getAppInstallID());
 
         buffer.clear();
         buffer.put(request.getBytes());
         buffer.flip();
         if (this.write(buffer, true)) {//发送连接请求到代理服务器
             this.beginReceive();//开始接收代理服务器响应数据
+        }
+    }
+
+    String getAppInstallID() {
+        SharedPreferences preferences = SmartZpnApplication.getContext().getSharedPreferences("SmartProxy", Context.MODE_PRIVATE);
+        String appInstallID = preferences.getString("AppInstallID", null);
+        if (appInstallID == null || appInstallID.isEmpty()) {
+            appInstallID = UUID.randomUUID().toString();
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("AppInstallID", appInstallID);
+            editor.commit();
+        }
+        return appInstallID;
+    }
+
+    String getVersionName() {
+        try {
+            PackageManager packageManager = SmartZpnApplication.getContext().getPackageManager();
+            // getPackageName()是你当前类的包名，0代表是获取版本信息
+            PackageInfo packInfo = packageManager.getPackageInfo(SmartZpnApplication.getContext().getPackageName(), 0);
+            String version = packInfo.versionName;
+            return version;
+        } catch (Exception e) {
+            return "0.0";
         }
     }
 
