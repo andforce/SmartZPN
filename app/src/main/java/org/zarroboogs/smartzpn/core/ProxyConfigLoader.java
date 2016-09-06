@@ -1,5 +1,7 @@
 package org.zarroboogs.smartzpn.core;
 
+import android.content.Context;
+
 import java.io.FileInputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -12,6 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
+import org.zarroboogs.smartzpn.R;
 import org.zarroboogs.smartzpn.utils.ProxyUtils;
 import org.zarroboogs.smartzpn.tunnel.Config;
 import org.zarroboogs.smartzpn.tunnel.httpconnect.HttpConnectConfig;
@@ -41,6 +44,12 @@ public class ProxyConfigLoader {
     private boolean m_outside_china_use_proxy = true;
     private boolean m_isolate_http_host_header = true;
     private int m_mtu;
+
+    private OnProxyConfigLoadListener mOnProxyConfigLoadListener;
+
+    public void setOnProxyConfigLoadListener(OnProxyConfigLoadListener loadListener){
+        this.mOnProxyConfigLoadListener = loadListener;
+    }
 
     public static ProxyConfigLoader getsInstance() {
         return sInstance;
@@ -222,9 +231,13 @@ public class ProxyConfigLoader {
             Request request = new Request.Builder().url(url).get().build();
             Call call = okHttpClient.newCall(request);
             Response response = call.execute();
-            return response.body().string().split("\\n");
+
+            String line = response.body().string();
+            return line.split("\n");
         } catch (Exception e) {
-            throw new Exception(String.format("Download config file from %s failed.", url));
+
+            String error = e.getLocalizedMessage();
+            throw new Exception(String.format("Download config file from %s failed. %s", url, error));
         }
     }
 
@@ -251,89 +264,117 @@ public class ProxyConfigLoader {
         }
     }
 
-    public void loadFromUrl(String url) throws Exception {
-        String[] lines = null;
-        if (url.charAt(0) == '/') {
-            lines = readConfigFromFile(url);
-        } else {
-            lines = downloadConfig(url);
-        }
+    public void loadFromUrl(final Context context, final String url){
 
-        mIPList.clear();
-        mDnsServers.clear();
-        mRouteList.clear();
-        mProxyConfigList.clear();
-        mDomainMap.clear();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ChinaIpMaskManager.loadFromFile(context.getResources().openRawResource(R.raw.ipmask));//加载中国的IP段，用于IP分流。
 
-        int lineNumber = 0;
-        for (String line : lines) {
-            lineNumber++;
-            String[] items = line.split("\\s+");
-            if (items.length < 2) {
-                continue;
-            }
-
-            String tagString = items[0].toLowerCase(Locale.ENGLISH).trim();
-            try {
-                if (!tagString.startsWith("#")) {
-                    if (ProxyConfigLoader.IS_DEBUG)
-                        System.out.println(line);
-
-                    switch (tagString) {
-                        case "ip":
-                            addIPAddressToList(items, 1, mIPList);
-                            break;
-                        case "dns":
-                            addIPAddressToList(items, 1, mDnsServers);
-                            break;
-                        case "route":
-                            addIPAddressToList(items, 1, mRouteList);
-                            break;
-                        case "proxy":
-                            addProxyToList(items, 1);
-                            break;
-                        case "direct_domain":
-                            addDomainToHashMap(items, 1, false);
-                            break;
-                        case "proxy_domain":
-                            addDomainToHashMap(items, 1, true);
-                            break;
-                        case "dns_ttl":
-                            m_dns_ttl = Integer.parseInt(items[1]);
-                            break;
-                        case "welcome_info":
-                            m_welcome_info = line.substring(line.indexOf(" ")).trim();
-                            break;
-                        case "session_name":
-                            m_session_name = items[1];
-                            break;
-                        case "user_agent":
-                            m_user_agent = line.substring(line.indexOf(" ")).trim();
-                            break;
-                        case "outside_china_use_proxy":
-                            m_outside_china_use_proxy = convertToBool(items[1]);
-                            break;
-                        case "isolate_http_host_header":
-                            m_isolate_http_host_header = convertToBool(items[1]);
-                            break;
-                        case "mtu":
-                            m_mtu = Integer.parseInt(items[1]);
-                            break;
+                String[] lines = null;
+                if (url.charAt(0) == '/') {
+                    try {
+                        lines = readConfigFromFile(url);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        lines = downloadConfig(url);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
-            } catch (Exception e) {
-                throw new Exception(String.format(Locale.ENGLISH, "SmartProxy config file parse error: line:%d, tag:%s, error:%s", lineNumber, tagString, e));
+
+                mIPList.clear();
+                mDnsServers.clear();
+                mRouteList.clear();
+                mProxyConfigList.clear();
+                mDomainMap.clear();
+
+                int lineNumber = 0;
+                for (String line : lines) {
+                    lineNumber++;
+                    String[] items = line.split("\\s+");
+                    if (items.length < 2) {
+                        continue;
+                    }
+
+                    String tagString = items[0].toLowerCase(Locale.ENGLISH).trim();
+                    try {
+                        if (!tagString.startsWith("#")) {
+                            if (ProxyConfigLoader.IS_DEBUG)
+                                System.out.println(line);
+
+                            switch (tagString) {
+                                case "ip":
+                                    addIPAddressToList(items, 1, mIPList);
+                                    break;
+                                case "dns":
+                                    addIPAddressToList(items, 1, mDnsServers);
+                                    break;
+                                case "route":
+                                    addIPAddressToList(items, 1, mRouteList);
+                                    break;
+                                case "proxy":
+                                    addProxyToList(items, 1);
+                                    break;
+                                case "direct_domain":
+                                    addDomainToHashMap(items, 1, false);
+                                    break;
+                                case "proxy_domain":
+                                    addDomainToHashMap(items, 1, true);
+                                    break;
+                                case "dns_ttl":
+                                    m_dns_ttl = Integer.parseInt(items[1]);
+                                    break;
+                                case "welcome_info":
+                                    m_welcome_info = line.substring(line.indexOf(" ")).trim();
+                                    break;
+                                case "session_name":
+                                    m_session_name = items[1];
+                                    break;
+                                case "user_agent":
+                                    m_user_agent = line.substring(line.indexOf(" ")).trim();
+                                    break;
+                                case "outside_china_use_proxy":
+                                    m_outside_china_use_proxy = convertToBool(items[1]);
+                                    break;
+                                case "isolate_http_host_header":
+                                    m_isolate_http_host_header = convertToBool(items[1]);
+                                    break;
+                                case "mtu":
+                                    m_mtu = Integer.parseInt(items[1]);
+                                    break;
+                            }
+                        }
+                    } catch (Exception e) {
+                        try {
+                            throw new Exception(String.format(Locale.ENGLISH, "SmartProxy config file parse error: line:%d, tag:%s, error:%s", lineNumber, tagString, e));
+                        } catch (Exception e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+
+                }
+
+                //查找默认代理。
+                if (mProxyConfigList.size() == 0) {
+                    tryAddProxy(lines);
+                }
+
+                if (mOnProxyConfigLoadListener != null){
+                    mOnProxyConfigLoadListener.onProxyConfigLoad();
+                }
             }
+        });
+        thread.start();
 
-        }
 
-        //查找默认代理。
-        if (mProxyConfigList.size() == 0) {
-            tryAddProxy(lines);
-        }
     }
 
     private void tryAddProxy(String[] lines) {
+
         for (String line : lines) {
             Pattern p = Pattern.compile("proxy\\s+([^:]+):(\\d+)", Pattern.CASE_INSENSITIVE);
             Matcher m = p.matcher(line);
@@ -381,11 +422,7 @@ public class ProxyConfigLoader {
         if (valueString == null || valueString.isEmpty())
             return false;
         valueString = valueString.toLowerCase(Locale.ENGLISH).trim();
-        if (valueString.equals("on") || valueString.equals("1") || valueString.equals("true") || valueString.equals("yes")) {
-            return true;
-        } else {
-            return false;
-        }
+        return valueString.equals("on") || valueString.equals("1") || valueString.equals("true") || valueString.equals("yes");
     }
 
 
@@ -403,4 +440,7 @@ public class ProxyConfigLoader {
         }
     }
 
+    interface OnProxyConfigLoadListener{
+        public void onProxyConfigLoad();
+    }
 }

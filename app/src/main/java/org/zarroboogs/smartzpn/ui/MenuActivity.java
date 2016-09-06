@@ -43,9 +43,9 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         mConnBtn = (ProgressButton) findViewById(R.id.connectionBtn);
-        if (LocalVpnService.IsRunning) {
-            mConnBtn.setComplete();
-        }
+//        if (LocalVpnService.IsRunning) {
+//            mConnBtn.setComplete();
+//        }
 
         View guillotineMenu = LayoutInflater.from(this).inflate(R.layout.guillotine, null);
         FrameLayout root = (FrameLayout) findViewById(R.id.root);
@@ -80,7 +80,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.connectionBtn) {
-            if (!LocalVpnService.IsRunning) {
+            if (true) {
                 mConnBtn.showProgress();
                 mConnBtn.setClickable(false);
                 Intent intent = LocalVpnService.prepare(this);
@@ -91,7 +91,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 }
             } else {
                 mConnBtn.showProgress();
-                LocalVpnService.IsRunning = false;
                 LocalVpnService.Instance.disconnectVPN();
                 stopService(new Intent(MenuActivity.this, LocalVpnService.class));
                 System.runFinalization();
@@ -119,7 +118,9 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     private void startVPNService() {
         String configUrl = TokenUtils.getSpec();
         LocalVpnService.ConfigUrl = configUrl;
-        startService(new Intent(this, LocalVpnService.class));
+        Intent intent = new Intent(this, LocalVpnService.class);
+        intent.putExtra("PROXY_URL", "https://qypac.net/19kwr8eq");
+        startService(intent);
     }
 
     @Override

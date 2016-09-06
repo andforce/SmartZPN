@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.net.VpnService;
 import android.os.Handler;
 import android.os.ParcelFileDescriptor;
+import android.text.TextUtils;
 
 import org.zarroboogs.smartzpn.R;
 import org.zarroboogs.smartzpn.dns.DnsPacket;
@@ -24,11 +25,10 @@ import org.zarroboogs.smartzpn.tcpip.TCPHeader;
 import org.zarroboogs.smartzpn.tcpip.UDPHeader;
 import org.zarroboogs.smartzpn.ui.MenuActivity;
 
-public class LocalVpnService extends VpnService implements Runnable {
+public class LocalVpnService extends VpnService implements Runnable, ProxyConfigLoader.OnProxyConfigLoadListener {
 
     public static LocalVpnService Instance;
     public static String ConfigUrl;
-    public static boolean IsRunning = false;
 
     private static int ID;
     private static int LOCAL_IP;
@@ -50,6 +50,8 @@ public class LocalVpnService extends VpnService implements Runnable {
     private long m_ReceivedBytes;
 
 
+    private ProxyConfigLoader mProxyCofigLoader;
+
     public LocalVpnService() {
         ID++;
         m_Handler = new Handler();
@@ -62,32 +64,35 @@ public class LocalVpnService extends VpnService implements Runnable {
 
         System.out.printf("New VPNService(%d)\n", ID);
 
+        mProxyCofigLoader = ProxyConfigLoader.getsInstance();
+        mProxyCofigLoader.setOnProxyConfigLoadListener(this);
+
     }
 
     @Override
     public void onCreate() {
         System.out.printf("VPNService(%s) created.\n", ID);
-        // Start a new session by creating a new thread.
-        mVPNThread = new Thread(this, "VPNServiceThread");
-        mVPNThread.start();
         super.onCreate();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        IsRunning = true;
+
+        String proxyUrl = intent.getStringExtra("PROXY_URL");
+        if (!TextUtils.isEmpty(proxyUrl)) {
+            mProxyCofigLoader.loadFromUrl(this, proxyUrl);
+        }
+
         return super.onStartCommand(intent, flags, startId);
     }
 
-    public interface onStatusChangedListener {
-        public void onStatusChanged(String status, Boolean isRunning);
-
-        public void onLogReceived(String logString);
-
-        public void onConnectionChanged(boolean isConn);
-
-        public void onConnectionError();
+    @Override
+    public void onProxyConfigLoad() {
+        // Start a new session by creating a new thread.
+        mVPNThread = new Thread(this, "VPNServiceThread");
+        mVPNThread.start();
     }
+
 
     public static void addOnStatusChangedListener(onStatusChangedListener listener) {
         if (!m_OnStatusChangedListeners.containsKey(listener)) {
@@ -159,9 +164,6 @@ public class LocalVpnService extends VpnService implements Runnable {
     public synchronized void run() {
         try {
 
-            ChinaIpMaskManager.loadFromFile(getResources().openRawResource(R.raw.ipmask));//加载中国的IP段，用于IP分流。
-            waitUntilPreapred();//检查是否准备完毕。
-
             mTcpProxyServer = new TcpProxyServer(0);
             mTcpProxyServer.start();
             writeLog("LocalTcpServer started.");
@@ -171,38 +173,7 @@ public class LocalVpnService extends VpnService implements Runnable {
             writeLog("LocalDnsProxy started.");
 
             while (true) {
-                if (IsRunning) {
-                    //加载配置文件
-                    writeLog("Load config from %s ...", ConfigUrl);
-                    try {
-                        ProxyConfigLoader.getsInstance().loadFromUrl(ConfigUrl);
-                        if (ProxyConfigLoader.getsInstance().getDefaultProxy() == null) {
-                            throw new Exception("Invalid config file.");
-                        }
-                        writeLog("PROXY %s", ProxyConfigLoader.getsInstance().getDefaultProxy());
-                    } catch (Exception e) {
-                        String errString = e.getMessage();
-                        if (errString == null || errString.isEmpty()) {
-                            errString = e.toString();
-                        }
-
-                        IsRunning = false;
-                        onStatusChanged(errString, false);
-                        onConnectionError();
-                        continue;
-                    }
-
-
-                    writeLog("Load config success.");
-                    String welcomeInfoString = ProxyConfigLoader.getsInstance().getWelcomeInfo();
-                    if (welcomeInfoString != null && !welcomeInfoString.isEmpty()) {
-                        writeLog("%s", ProxyConfigLoader.getsInstance().getWelcomeInfo());
-                    }
-
-                    runVPN();
-                } else {
-                    Thread.sleep(100);
-                }
+                runVPN();
             }
         } catch (InterruptedException e) {
             System.out.println(e);
@@ -222,8 +193,8 @@ public class LocalVpnService extends VpnService implements Runnable {
         this.m_VPNOutputStream = new FileOutputStream(mVPNInterface.getFileDescriptor());
         FileInputStream in = new FileInputStream(mVPNInterface.getFileDescriptor());
         int size = 0;
-        while (size != -1 && IsRunning) {
-            while ((size = in.read(mPacket)) > 0 && IsRunning) {
+        while (size != -1) {
+            while ((size = in.read(mPacket)) > 0) {
                 if (m_DnsProxy.Stopped || mTcpProxyServer.Stopped) {
                     in.close();
                     throw new Exception("LocalServer stopped.");
@@ -309,15 +280,6 @@ public class LocalVpnService extends VpnService implements Runnable {
         }
     }
 
-    private void waitUntilPreapred() {
-        while (prepare(this) != null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
     private ParcelFileDescriptor establishVPN() throws Exception {
         Builder builder = new Builder();
@@ -370,8 +332,8 @@ public class LocalVpnService extends VpnService implements Runnable {
         Intent intent = new Intent(this, MenuActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
         builder.setConfigureIntent(pendingIntent);
-
         builder.setSession(ProxyConfigLoader.getsInstance().getSessionName());
+
         ParcelFileDescriptor pfdDescriptor = builder.establish();
 
 
@@ -413,7 +375,6 @@ public class LocalVpnService extends VpnService implements Runnable {
         }
 
         stopSelf();
-        IsRunning = false;
         System.exit(0);
     }
 
@@ -423,6 +384,16 @@ public class LocalVpnService extends VpnService implements Runnable {
         if (mVPNThread != null) {
             mVPNThread.interrupt();
         }
+    }
+
+    public interface onStatusChangedListener {
+        public void onStatusChanged(String status, Boolean isRunning);
+
+        public void onLogReceived(String logString);
+
+        public void onConnectionChanged(boolean isConn);
+
+        public void onConnectionError();
     }
 
 }

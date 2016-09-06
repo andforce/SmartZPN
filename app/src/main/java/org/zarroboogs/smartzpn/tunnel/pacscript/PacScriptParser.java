@@ -10,7 +10,13 @@ import org.mozilla.javascript.ScriptableObject;
 /**
  * Created by wangdiyuan on 16-9-6.
  */
-public class PacParser {
+public class PacScriptParser {
+
+    private String mScript;
+    public PacScriptParser(String script){
+        mScript = shExpMatch + "\n" + isInNet + "\n" + script;
+    }
+
     private static final String shExpMatch = "var shExpMatch = function (){\n" +
             "    var _map = { '.': '\\\\.', '*': '.*?', '?': '.' };\n" +
             "    var _rep = function (m){ return _map[m] };\n" +
@@ -40,7 +46,7 @@ public class PacParser {
             "    };\n" +
             "}();";
 
-    public String runScript(String js, String functionName, Object[] functionParams) {
+    private String runScript(String js, String functionName, Object[] functionParams) {
         Context rhino = Context.enter();
         rhino.setOptimizationLevel(-1);
         try {
@@ -61,5 +67,9 @@ public class PacParser {
         } finally {
             Context.exit();
         }
+    }
+
+    public String findProxyForURL(String url, String host){
+        return runScript(mScript, "FindProxyForURL", new String[]{url, host});
     }
 }
