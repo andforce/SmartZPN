@@ -119,7 +119,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         String configUrl = TokenUtils.getSpec();
         LocalVpnService.ConfigUrl = configUrl;
         Intent intent = new Intent(this, LocalVpnService.class);
-        intent.putExtra("PROXY_URL", "https://qypac.net/19kwr8eq");
+        intent.putExtra("PROXY_URL", "url");
         startService(intent);
     }
 
