@@ -172,9 +172,11 @@ public class LocalVpnService extends VpnService implements Runnable, ProxyConfig
             m_DnsProxy.start();
             writeLog("LocalDnsProxy started.");
 
-            while (true) {
-                runVPN();
-            }
+//            while (true) {
+//                runVPN();
+//            }
+            runVPN();
+
         } catch (InterruptedException e) {
             System.out.println(e);
             onConnectionError();
