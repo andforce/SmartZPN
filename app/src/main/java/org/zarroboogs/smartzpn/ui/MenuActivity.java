@@ -15,7 +15,7 @@ import com.yalantis.guillotine.interfaces.GuillotineListener;
 import org.zarroboogs.smartzpn.R;
 import org.zarroboogs.smartzpn.core.LocalVpnService;
 import org.zarroboogs.smartzpn.ui.widget.ProgressButton;
-import org.zarroboogs.smartzpn.utis.TokenUtils;
+import org.zarroboogs.smartzpn.utils.TokenUtils;
 
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener, LocalVpnService.onStatusChangedListener {
 

@@ -1,7 +1,7 @@
 package org.zarroboogs.smartzpn.dns;
 
 
-import org.zarroboogs.smartzpn.tcpip.CommonMethods;
+import org.zarroboogs.smartzpn.utils.ProxyUtils;
 
 public class ResourcePointer {
     static final short offset_Domain = 0;
@@ -20,46 +20,46 @@ public class ResourcePointer {
     }
 
     public void setDomain(short value) {
-        CommonMethods.writeShort(Data, Offset + offset_Domain, value);
+        ProxyUtils.writeShort(Data, Offset + offset_Domain, value);
     }
 
     public short getType() {
-        return CommonMethods.readShort(Data, Offset + offset_Type);
+        return ProxyUtils.readShort(Data, Offset + offset_Type);
     }
 
     public void setType(short value) {
-        CommonMethods.writeShort(Data, Offset + offset_Type, value);
+        ProxyUtils.writeShort(Data, Offset + offset_Type, value);
     }
 
     public short getClass(short value) {
-        return CommonMethods.readShort(Data, Offset + offset_Class);
+        return ProxyUtils.readShort(Data, Offset + offset_Class);
     }
 
     public void setClass(short value) {
-        CommonMethods.writeShort(Data, Offset + offset_Class, value);
+        ProxyUtils.writeShort(Data, Offset + offset_Class, value);
     }
 
     public int getTTL() {
-        return CommonMethods.readInt(Data, Offset + offset_TTL);
+        return ProxyUtils.readInt(Data, Offset + offset_TTL);
     }
 
     public void setTTL(int value) {
-        CommonMethods.writeInt(Data, Offset + offset_TTL, value);
+        ProxyUtils.writeInt(Data, Offset + offset_TTL, value);
     }
 
     public short getDataLength() {
-        return CommonMethods.readShort(Data, Offset + offset_DataLength);
+        return ProxyUtils.readShort(Data, Offset + offset_DataLength);
     }
 
     public void setDataLength(short value) {
-        CommonMethods.writeShort(Data, Offset + offset_DataLength, value);
+        ProxyUtils.writeShort(Data, Offset + offset_DataLength, value);
     }
 
     public int getIP() {
-        return CommonMethods.readInt(Data, Offset + offset_IP);
+        return ProxyUtils.readInt(Data, Offset + offset_IP);
     }
 
     public void setIP(int value) {
-        CommonMethods.writeInt(Data, Offset + offset_IP, value);
+        ProxyUtils.writeInt(Data, Offset + offset_IP, value);
     }
 }

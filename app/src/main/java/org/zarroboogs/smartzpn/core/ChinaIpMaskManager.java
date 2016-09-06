@@ -5,7 +5,7 @@ import java.io.InputStream;
 
 import android.util.SparseIntArray;
 
-import org.zarroboogs.smartzpn.tcpip.CommonMethods;
+import org.zarroboogs.smartzpn.utils.ProxyUtils;
 
 
 public class ChinaIpMaskManager {
@@ -33,11 +33,11 @@ public class ChinaIpMaskManager {
             byte[] buffer = new byte[4096];
             while ((count = inputStream.read(buffer)) > 0) {
                 for (int i = 0; i < count; i += 8) {
-                    int ip = CommonMethods.readInt(buffer, i);
-                    int mask = CommonMethods.readInt(buffer, i + 4);
+                    int ip = ProxyUtils.readInt(buffer, i);
+                    int mask = ProxyUtils.readInt(buffer, i + 4);
                     ChinaIpMaskDict.put(ip, mask);
                     MaskDict.put(mask, mask);
-                    //System.out.printf("%s/%s\n", CommonMethods.IP2String(ip),CommonMethods.IP2String(mask));
+                    //System.out.printf("%s/%s\n", ProxyUtils.IP2String(ip),ProxyUtils.IP2String(mask));
                 }
             }
             inputStream.close();

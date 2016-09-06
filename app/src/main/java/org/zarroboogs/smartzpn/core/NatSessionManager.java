@@ -2,7 +2,7 @@ package org.zarroboogs.smartzpn.core;
 
 import android.util.SparseArray;
 
-import org.zarroboogs.smartzpn.tcpip.CommonMethods;
+import org.zarroboogs.smartzpn.utils.ProxyUtils;
 
 public class NatSessionManager {
 
@@ -38,12 +38,12 @@ public class NatSessionManager {
         session.RemoteIP = remoteIP;
         session.RemotePort = remotePort;
 
-        if (ProxyConfigLoader.isFakeIP(remoteIP)) {
+        if (ProxyUtils.isFakeIP(remoteIP)) {
             session.RemoteHost = DnsProxy.reverseLookup(remoteIP);
         }
 
         if (session.RemoteHost == null) {
-            session.RemoteHost = CommonMethods.ipIntToString(remoteIP);
+            session.RemoteHost = ProxyUtils.ipIntToString(remoteIP);
         }
         Sessions.put(portKey, session);
         return session;

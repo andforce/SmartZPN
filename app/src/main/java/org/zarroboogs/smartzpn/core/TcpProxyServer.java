@@ -1,6 +1,6 @@
 package org.zarroboogs.smartzpn.core;
 
-import org.zarroboogs.smartzpn.tcpip.CommonMethods;
+import org.zarroboogs.smartzpn.utils.ProxyUtils;
 import org.zarroboogs.smartzpn.tunnel.Tunnel;
 
 import java.io.IOException;
@@ -97,7 +97,7 @@ public class TcpProxyServer implements Runnable {
         if (session != null) {
             if (ProxyConfigLoader.getsInstance().needProxy(session.RemoteHost, session.RemoteIP)) {
                 if (ProxyConfigLoader.IS_DEBUG)
-                    System.out.printf("%d/%d:[PROXY] %s=>%s:%d\n", NatSessionManager.getSessionCount(), Tunnel.SessionCount, session.RemoteHost, CommonMethods.ipIntToString(session.RemoteIP), session.RemotePort & 0xFFFF);
+                    System.out.printf("%d/%d:[PROXY] %s=>%s:%d\n", NatSessionManager.getSessionCount(), Tunnel.SessionCount, session.RemoteHost, ProxyUtils.ipIntToString(session.RemoteIP), session.RemotePort & 0xFFFF);
                 return InetSocketAddress.createUnresolved(session.RemoteHost, session.RemotePort & 0xFFFF);
             } else {
                 return new InetSocketAddress(localChannel.socket().getInetAddress(), session.RemotePort & 0xFFFF);

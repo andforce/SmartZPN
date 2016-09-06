@@ -7,24 +7,18 @@ import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.VpnService;
-import android.os.Build;
 import android.os.Handler;
 import android.os.ParcelFileDescriptor;
 
 import org.zarroboogs.smartzpn.R;
 import org.zarroboogs.smartzpn.dns.DnsPacket;
-import org.zarroboogs.smartzpn.tcpip.CommonMethods;
+import org.zarroboogs.smartzpn.utils.ProxyUtils;
 import org.zarroboogs.smartzpn.tcpip.IPHeader;
 import org.zarroboogs.smartzpn.tcpip.TCPHeader;
 import org.zarroboogs.smartzpn.tcpip.UDPHeader;
@@ -40,7 +34,7 @@ public class LocalVpnService extends VpnService implements Runnable {
     private static int LOCAL_IP;
     private static ConcurrentHashMap<onStatusChangedListener, Object> m_OnStatusChangedListeners = new ConcurrentHashMap<onStatusChangedListener, Object>();
 
-    private Thread m_VPNThread;
+    private Thread mVPNThread;
     private ParcelFileDescriptor mVPNInterface;
     private TcpProxyServer mTcpProxyServer;
     private DnsProxy m_DnsProxy;
@@ -74,8 +68,8 @@ public class LocalVpnService extends VpnService implements Runnable {
     public void onCreate() {
         System.out.printf("VPNService(%s) created.\n", ID);
         // Start a new session by creating a new thread.
-        m_VPNThread = new Thread(this, "VPNServiczeThread");
-        m_VPNThread.start();
+        mVPNThread = new Thread(this, "VPNServiceThread");
+        mVPNThread.start();
         super.onCreate();
     }
 
@@ -154,7 +148,7 @@ public class LocalVpnService extends VpnService implements Runnable {
 
     public void sendUDPPacket(IPHeader ipHeader, UDPHeader udpHeader) {
         try {
-            CommonMethods.ComputeUDPChecksum(ipHeader, udpHeader);
+            ProxyUtils.ComputeUDPChecksum(ipHeader, udpHeader);
             this.m_VPNOutputStream.write(ipHeader.m_Data, ipHeader.m_Offset, ipHeader.getTotalLength());
         } catch (IOException e) {
             e.printStackTrace();
@@ -255,7 +249,7 @@ public class LocalVpnService extends VpnService implements Runnable {
                             tcpHeader.setSourcePort(session.RemotePort);
                             ipHeader.setDestinationIP(LOCAL_IP);
 
-                            CommonMethods.ComputeTCPChecksum(ipHeader, tcpHeader);
+                            ProxyUtils.ComputeTCPChecksum(ipHeader, tcpHeader);
                             m_VPNOutputStream.write(ipHeader.m_Data, ipHeader.m_Offset, size);
                             m_ReceivedBytes += size;
                         } else {
@@ -292,7 +286,7 @@ public class LocalVpnService extends VpnService implements Runnable {
                         ipHeader.setDestinationIP(LOCAL_IP);
                         tcpHeader.setDestinationPort(mTcpProxyServer.Port);
 
-                        CommonMethods.ComputeTCPChecksum(ipHeader, tcpHeader);
+                        ProxyUtils.ComputeTCPChecksum(ipHeader, tcpHeader);
                         m_VPNOutputStream.write(ipHeader.m_Data, ipHeader.m_Offset, size);
                         session.BytesSent += tcpDataSize;//注意顺序
                         m_SentBytes += size;
@@ -332,7 +326,7 @@ public class LocalVpnService extends VpnService implements Runnable {
             System.out.printf("setMtu: %d\n", ProxyConfigLoader.getsInstance().getMTU());
 
         ProxyConfigLoader.IPAddress ipAddress = ProxyConfigLoader.getsInstance().getDefaultLocalIP();
-        LOCAL_IP = CommonMethods.ipStringToInt(ipAddress.Address);
+        LOCAL_IP = ProxyUtils.ipStringToInt(ipAddress.Address);
         builder.addAddress(ipAddress.Address, ipAddress.PrefixLength);
         if (ProxyConfigLoader.IS_DEBUG)
             System.out.printf("addAddress: %s/%d\n", ipAddress.Address, ipAddress.PrefixLength);
@@ -349,10 +343,10 @@ public class LocalVpnService extends VpnService implements Runnable {
                 if (ProxyConfigLoader.IS_DEBUG)
                     System.out.printf("addRoute: %s/%d\n", routeAddress.Address, routeAddress.PrefixLength);
             }
-            builder.addRoute(CommonMethods.ipIntToString(ProxyConfigLoader.FAKE_NETWORK_IP), 16);
+            builder.addRoute(ProxyUtils.fakeNetWorkIP(), 16);
 
             if (ProxyConfigLoader.IS_DEBUG)
-                System.out.printf("addRoute for FAKE_NETWORK: %s/%d\n", CommonMethods.ipIntToString(ProxyConfigLoader.FAKE_NETWORK_IP), 16);
+                System.out.printf("addRoute for FAKE_NETWORK: %s/%d\n", ProxyUtils.fakeNetWorkIP(), 16);
         } else {
             builder.addRoute("0.0.0.0", 0);
             if (ProxyConfigLoader.IS_DEBUG)
@@ -426,8 +420,8 @@ public class LocalVpnService extends VpnService implements Runnable {
     @Override
     public void onDestroy() {
         System.out.printf("VPNService(%s) destoried.\n", ID);
-        if (m_VPNThread != null) {
-            m_VPNThread.interrupt();
+        if (mVPNThread != null) {
+            mVPNThread.interrupt();
         }
     }
 

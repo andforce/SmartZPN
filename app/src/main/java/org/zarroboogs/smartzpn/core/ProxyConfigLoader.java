@@ -12,7 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-import org.zarroboogs.smartzpn.tcpip.CommonMethods;
+import org.zarroboogs.smartzpn.utils.ProxyUtils;
 import org.zarroboogs.smartzpn.tunnel.Config;
 import org.zarroboogs.smartzpn.tunnel.httpconnect.HttpConnectConfig;
 import org.zarroboogs.smartzpn.tunnel.shadowsocks.ShadowsocksConfig;
@@ -26,8 +26,7 @@ import okhttp3.Response;
 public class ProxyConfigLoader {
     private static final ProxyConfigLoader sInstance = new ProxyConfigLoader();
     public final static boolean IS_DEBUG = true;
-    public final static int FAKE_NETWORK_MASK = CommonMethods.ipStringToInt("255.255.0.0");
-    public final static int FAKE_NETWORK_IP = CommonMethods.ipStringToInt("10.231.0.0");
+
 
     private ArrayList<IPAddress> mIPList;
     private ArrayList<IPAddress> mDnsServers;
@@ -115,9 +114,7 @@ public class ProxyConfigLoader {
     };
 
 
-    public static boolean isFakeIP(int ip) {
-        return (ip & ProxyConfigLoader.FAKE_NETWORK_MASK) == ProxyConfigLoader.FAKE_NETWORK_IP;
-    }
+
 
     public Config getDefaultProxy() {
         if (mProxyConfigList.size() > 0) {
@@ -206,7 +203,7 @@ public class ProxyConfigLoader {
             }
         }
 
-        if (isFakeIP(ip))
+        if (ProxyUtils.isFakeIP(ip))
             return true;
 
         if (m_outside_china_use_proxy && ip != 0) {

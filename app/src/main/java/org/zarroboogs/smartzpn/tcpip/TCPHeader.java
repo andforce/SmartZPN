@@ -1,5 +1,7 @@
 package org.zarroboogs.smartzpn.tcpip;
 
+import org.zarroboogs.smartzpn.utils.ProxyUtils;
+
 public class TCPHeader {
 
     public static final int FIN = 1;
@@ -33,19 +35,19 @@ public class TCPHeader {
     }
 
     public short getSourcePort() {
-        return CommonMethods.readShort(m_Data, m_Offset + offset_src_port);
+        return ProxyUtils.readShort(m_Data, m_Offset + offset_src_port);
     }
 
     public void setSourcePort(short value) {
-        CommonMethods.writeShort(m_Data, m_Offset + offset_src_port, value);
+        ProxyUtils.writeShort(m_Data, m_Offset + offset_src_port, value);
     }
 
     public short getDestinationPort() {
-        return CommonMethods.readShort(m_Data, m_Offset + offset_dest_port);
+        return ProxyUtils.readShort(m_Data, m_Offset + offset_dest_port);
     }
 
     public void setDestinationPort(short value) {
-        CommonMethods.writeShort(m_Data, m_Offset + offset_dest_port, value);
+        ProxyUtils.writeShort(m_Data, m_Offset + offset_dest_port, value);
     }
 
     public byte getFlags() {
@@ -53,19 +55,19 @@ public class TCPHeader {
     }
 
     public short getCrc() {
-        return CommonMethods.readShort(m_Data, m_Offset + offset_crc);
+        return ProxyUtils.readShort(m_Data, m_Offset + offset_crc);
     }
 
     public void setCrc(short value) {
-        CommonMethods.writeShort(m_Data, m_Offset + offset_crc, value);
+        ProxyUtils.writeShort(m_Data, m_Offset + offset_crc, value);
     }
 
     public int getSeqID() {
-        return CommonMethods.readInt(m_Data, m_Offset + offset_seq);
+        return ProxyUtils.readInt(m_Data, m_Offset + offset_seq);
     }
 
     public int getAckID() {
-        return CommonMethods.readInt(m_Data, m_Offset + offset_ack);
+        return ProxyUtils.readInt(m_Data, m_Offset + offset_ack);
     }
 
     @Override

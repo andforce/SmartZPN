@@ -1,6 +1,6 @@
 package org.zarroboogs.smartzpn.core;
 
-import org.zarroboogs.smartzpn.tcpip.CommonMethods;
+import org.zarroboogs.smartzpn.utils.ProxyUtils;
 
 import java.util.Locale;
 
@@ -59,7 +59,7 @@ public class HttpHostHeaderParser {
 
             //read cipher suites:
             if (offset + 2 > limit) return null;
-            int cipherSuitesLength = CommonMethods.readShort(buffer, offset) & 0xFFFF;
+            int cipherSuitesLength = ProxyUtils.readShort(buffer, offset) & 0xFFFF;
             offset += 2;
             offset += cipherSuitesLength;
 
@@ -75,7 +75,7 @@ public class HttpHostHeaderParser {
 
             //read Extensions:
             if (offset + 2 > limit) return null;
-            int extensionsLength = CommonMethods.readShort(buffer, offset) & 0xFFFF;
+            int extensionsLength = ProxyUtils.readShort(buffer, offset) & 0xFFFF;
             offset += 2;
 
             if (offset + extensionsLength > limit) {
@@ -86,7 +86,7 @@ public class HttpHostHeaderParser {
             while (offset + 4 <= limit) {
                 int type0 = buffer[offset++] & 0xFF;
                 int type1 = buffer[offset++] & 0xFF;
-                int length = CommonMethods.readShort(buffer, offset) & 0xFFFF;
+                int length = ProxyUtils.readShort(buffer, offset) & 0xFFFF;
                 offset += 2;
 
                 if (type0 == 0x00 && type1 == 0x00 && length > 5) { //have SNI

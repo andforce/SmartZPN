@@ -1,6 +1,6 @@
 package org.zarroboogs.smartzpn.dns;
 
-import org.zarroboogs.smartzpn.tcpip.CommonMethods;
+import org.zarroboogs.smartzpn.utils.ProxyUtils;
 
 import java.nio.ByteBuffer;
 
@@ -49,50 +49,50 @@ public class DnsHeader {
     }
 
     public short getID() {
-        return CommonMethods.readShort(Data, Offset + offset_ID);
+        return ProxyUtils.readShort(Data, Offset + offset_ID);
     }
 
     public short getFlags() {
-        return CommonMethods.readShort(Data, Offset + offset_Flags);
+        return ProxyUtils.readShort(Data, Offset + offset_Flags);
     }
 
     public short getQuestionCount() {
-        return CommonMethods.readShort(Data, Offset + offset_QuestionCount);
+        return ProxyUtils.readShort(Data, Offset + offset_QuestionCount);
     }
 
     public short getResourceCount() {
-        return CommonMethods.readShort(Data, Offset + offset_ResourceCount);
+        return ProxyUtils.readShort(Data, Offset + offset_ResourceCount);
     }
 
     public short getAResourceCount() {
-        return CommonMethods.readShort(Data, Offset + offset_AResourceCount);
+        return ProxyUtils.readShort(Data, Offset + offset_AResourceCount);
     }
 
     public short getEResourceCount() {
-        return CommonMethods.readShort(Data, Offset + offset_EResourceCount);
+        return ProxyUtils.readShort(Data, Offset + offset_EResourceCount);
     }
 
     public void setID(short value) {
-        CommonMethods.writeShort(Data, Offset + offset_ID, value);
+        ProxyUtils.writeShort(Data, Offset + offset_ID, value);
     }
 
     public void setFlags(short value) {
-        CommonMethods.writeShort(Data, Offset + offset_Flags, value);
+        ProxyUtils.writeShort(Data, Offset + offset_Flags, value);
     }
 
     public void setQuestionCount(short value) {
-        CommonMethods.writeShort(Data, Offset + offset_QuestionCount, value);
+        ProxyUtils.writeShort(Data, Offset + offset_QuestionCount, value);
     }
 
     public void setResourceCount(short value) {
-        CommonMethods.writeShort(Data, Offset + offset_ResourceCount, value);
+        ProxyUtils.writeShort(Data, Offset + offset_ResourceCount, value);
     }
 
     public void setAResourceCount(short value) {
-        CommonMethods.writeShort(Data, Offset + offset_AResourceCount, value);
+        ProxyUtils.writeShort(Data, Offset + offset_AResourceCount, value);
     }
 
     public void setEResourceCount(short value) {
-        CommonMethods.writeShort(Data, Offset + offset_EResourceCount, value);
+        ProxyUtils.writeShort(Data, Offset + offset_EResourceCount, value);
     }
 }

@@ -1,5 +1,7 @@
 package org.zarroboogs.smartzpn.tcpip;
 
+import org.zarroboogs.smartzpn.utils.ProxyUtils;
+
 public class UDPHeader {
     static final short offset_src_port = 0; // Source port
     static final short offset_dest_port = 2; // Destination port
@@ -15,35 +17,35 @@ public class UDPHeader {
     }
 
     public short getSourcePort() {
-        return CommonMethods.readShort(m_Data, m_Offset + offset_src_port);
+        return ProxyUtils.readShort(m_Data, m_Offset + offset_src_port);
     }
 
     public void setSourcePort(short value) {
-        CommonMethods.writeShort(m_Data, m_Offset + offset_src_port, value);
+        ProxyUtils.writeShort(m_Data, m_Offset + offset_src_port, value);
     }
 
     public short getDestinationPort() {
-        return CommonMethods.readShort(m_Data, m_Offset + offset_dest_port);
+        return ProxyUtils.readShort(m_Data, m_Offset + offset_dest_port);
     }
 
     public void setDestinationPort(short value) {
-        CommonMethods.writeShort(m_Data, m_Offset + offset_dest_port, value);
+        ProxyUtils.writeShort(m_Data, m_Offset + offset_dest_port, value);
     }
 
     public int getTotalLength() {
-        return CommonMethods.readShort(m_Data, m_Offset + offset_tlen) & 0xFFFF;
+        return ProxyUtils.readShort(m_Data, m_Offset + offset_tlen) & 0xFFFF;
     }
 
     public void setTotalLength(int value) {
-        CommonMethods.writeShort(m_Data, m_Offset + offset_tlen, (short) value);
+        ProxyUtils.writeShort(m_Data, m_Offset + offset_tlen, (short) value);
     }
 
     public short getCrc() {
-        return CommonMethods.readShort(m_Data, m_Offset + offset_crc);
+        return ProxyUtils.readShort(m_Data, m_Offset + offset_crc);
     }
 
     public void setCrc(short value) {
-        CommonMethods.writeShort(m_Data, m_Offset + offset_crc, value);
+        ProxyUtils.writeShort(m_Data, m_Offset + offset_crc, value);
     }
 
     @Override

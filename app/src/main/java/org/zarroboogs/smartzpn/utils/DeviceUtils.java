@@ -1,4 +1,4 @@
-package org.zarroboogs.smartzpn.utis;
+package org.zarroboogs.smartzpn.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

@@ -1,10 +1,15 @@
-package org.zarroboogs.smartzpn.tcpip;
+package org.zarroboogs.smartzpn.utils;
+
+import org.zarroboogs.smartzpn.core.ProxyConfigLoader;
+import org.zarroboogs.smartzpn.tcpip.IPHeader;
+import org.zarroboogs.smartzpn.tcpip.TCPHeader;
+import org.zarroboogs.smartzpn.tcpip.UDPHeader;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-public class CommonMethods {
+public class ProxyUtils {
 
     public static InetAddress ipIntToInet4Address(int ip) {
         byte[] ipAddress = new byte[4];
@@ -114,7 +119,7 @@ public class CommonMethods {
     public static boolean ComputeIPChecksum(IPHeader ipHeader) {
         short oldCrc = ipHeader.getCrc();
         ipHeader.setCrc((short) 0);// 计算前置零
-        short newCrc = CommonMethods.checksum(0, ipHeader.m_Data,
+        short newCrc = ProxyUtils.checksum(0, ipHeader.m_Data,
                 ipHeader.m_Offset, ipHeader.getHeaderLength());
         ipHeader.setCrc(newCrc);
         return oldCrc == newCrc;
@@ -160,5 +165,19 @@ public class CommonMethods {
 
         udpHeader.setCrc(newCrc);
         return oldCrc == newCrc;
+    }
+
+    private final static int FAKE_NETWORK_MASK = ProxyUtils.ipStringToInt("255.255.0.0");
+    private final static int FAKE_NETWORK_IP = ProxyUtils.ipStringToInt("10.231.0.0");
+    public static boolean isFakeIP(int ip) {
+        return (ip & FAKE_NETWORK_MASK) == FAKE_NETWORK_IP;
+    }
+
+    public static int fakeIP(int hashIP){
+        return FAKE_NETWORK_IP | (hashIP & 0x0000FFFF);
+    }
+
+    public static String fakeNetWorkIP(){
+        return ipIntToString(FAKE_NETWORK_IP);
     }
 }

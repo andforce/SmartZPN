@@ -15,7 +15,7 @@ import org.zarroboogs.smartzpn.dns.DnsPacket;
 import org.zarroboogs.smartzpn.dns.Question;
 import org.zarroboogs.smartzpn.dns.Resource;
 import org.zarroboogs.smartzpn.dns.ResourcePointer;
-import org.zarroboogs.smartzpn.tcpip.CommonMethods;
+import org.zarroboogs.smartzpn.utils.ProxyUtils;
 import org.zarroboogs.smartzpn.tcpip.IPHeader;
 import org.zarroboogs.smartzpn.tcpip.UDPHeader;
 
@@ -104,7 +104,7 @@ public class DnsProxy implements Runnable {
         for (int i = 0; i < dnsPacket.Header.ResourceCount; i++) {
             Resource resource = dnsPacket.Resources[i];
             if (resource.Type == 1) {
-                int ip = CommonMethods.readInt(resource.Data, 0);
+                int ip = ProxyUtils.readInt(resource.Data, 0);
                 return ip;
             }
         }
@@ -134,7 +134,7 @@ public class DnsProxy implements Runnable {
         if (fakeIP == null) {
             int hashIP = domainString.hashCode();
             do {
-                fakeIP = ProxyConfigLoader.FAKE_NETWORK_IP | (hashIP & 0x0000FFFF);
+                fakeIP = ProxyUtils.fakeIP(hashIP);
                 hashIP++;
             } while (IPDomainMaps.containsKey(fakeIP));
 
@@ -153,7 +153,7 @@ public class DnsProxy implements Runnable {
                     int fakeIP = getOrCreateFakeIP(question.Domain);
                     tamperDnsResponse(rawPacket, dnsPacket, fakeIP);
                     if (ProxyConfigLoader.IS_DEBUG)
-                        System.out.printf("FakeDns: %s=>%s(%s)\n", question.Domain, CommonMethods.ipIntToString(realIP), CommonMethods.ipIntToString(fakeIP));
+                        System.out.printf("FakeDns: %s=>%s(%s)\n", question.Domain, ProxyUtils.ipIntToString(realIP), ProxyUtils.ipIntToString(fakeIP));
                     return true;
                 }
             }
@@ -205,7 +205,7 @@ public class DnsProxy implements Runnable {
                 tamperDnsResponse(ipHeader.m_Data, dnsPacket, fakeIP);
 
                 if (ProxyConfigLoader.IS_DEBUG)
-                    System.out.printf("interceptDns FakeDns: %s=>%s\n", question.Domain, CommonMethods.ipIntToString(fakeIP));
+                    System.out.printf("interceptDns FakeDns: %s=>%s\n", question.Domain, ProxyUtils.ipIntToString(fakeIP));
 
                 int sourceIP = ipHeader.getSourceIP();
                 short sourcePort = udpHeader.getSourcePort();
@@ -253,7 +253,7 @@ public class DnsProxy implements Runnable {
                 m_QueryArray.put(m_QueryID, state);// 关联数据
             }
 
-            InetSocketAddress remoteAddress = new InetSocketAddress(CommonMethods.ipIntToInet4Address(state.RemoteIP), state.RemotePort);
+            InetSocketAddress remoteAddress = new InetSocketAddress(ProxyUtils.ipIntToInet4Address(state.RemoteIP), state.RemotePort);
             DatagramPacket packet = new DatagramPacket(udpHeader.m_Data, udpHeader.m_Offset + 8, dnsPacket.Size);
             packet.setSocketAddress(remoteAddress);
 

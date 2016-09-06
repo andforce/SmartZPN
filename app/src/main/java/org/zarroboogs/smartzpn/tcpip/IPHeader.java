@@ -1,5 +1,7 @@
 package org.zarroboogs.smartzpn.tcpip;
 
+import org.zarroboogs.smartzpn.utils.ProxyUtils;
+
 public class IPHeader {
 
     public static final short IP = 0x0800;
@@ -57,27 +59,27 @@ public class IPHeader {
     }
 
     public int getTotalLength() {
-        return CommonMethods.readShort(m_Data, m_Offset + offset_tlen) & 0xFFFF;
+        return ProxyUtils.readShort(m_Data, m_Offset + offset_tlen) & 0xFFFF;
     }
 
     public void setTotalLength(int value) {
-        CommonMethods.writeShort(m_Data, m_Offset + offset_tlen, (short) value);
+        ProxyUtils.writeShort(m_Data, m_Offset + offset_tlen, (short) value);
     }
 
     public int getIdentification() {
-        return CommonMethods.readShort(m_Data, m_Offset + offset_identification) & 0xFFFF;
+        return ProxyUtils.readShort(m_Data, m_Offset + offset_identification) & 0xFFFF;
     }
 
     public void setIdentification(int value) {
-        CommonMethods.writeShort(m_Data, m_Offset + offset_identification, (short) value);
+        ProxyUtils.writeShort(m_Data, m_Offset + offset_identification, (short) value);
     }
 
     public short getFlagsAndOffset() {
-        return CommonMethods.readShort(m_Data, m_Offset + offset_flags_fo);
+        return ProxyUtils.readShort(m_Data, m_Offset + offset_flags_fo);
     }
 
     public void setFlagsAndOffset(short value) {
-        CommonMethods.writeShort(m_Data, m_Offset + offset_flags_fo, value);
+        ProxyUtils.writeShort(m_Data, m_Offset + offset_flags_fo, value);
     }
 
     public byte getTTL() {
@@ -97,32 +99,32 @@ public class IPHeader {
     }
 
     public short getCrc() {
-        return CommonMethods.readShort(m_Data, m_Offset + offset_crc);
+        return ProxyUtils.readShort(m_Data, m_Offset + offset_crc);
     }
 
     public void setCrc(short value) {
-        CommonMethods.writeShort(m_Data, m_Offset + offset_crc, value);
+        ProxyUtils.writeShort(m_Data, m_Offset + offset_crc, value);
     }
 
     public int getSourceIP() {
-        return CommonMethods.readInt(m_Data, m_Offset + offset_src_ip);
+        return ProxyUtils.readInt(m_Data, m_Offset + offset_src_ip);
     }
 
     public void setSourceIP(int value) {
-        CommonMethods.writeInt(m_Data, m_Offset + offset_src_ip, value);
+        ProxyUtils.writeInt(m_Data, m_Offset + offset_src_ip, value);
     }
 
     public int getDestinationIP() {
-        return CommonMethods.readInt(m_Data, m_Offset + offset_dest_ip);
+        return ProxyUtils.readInt(m_Data, m_Offset + offset_dest_ip);
     }
 
     public void setDestinationIP(int value) {
-        CommonMethods.writeInt(m_Data, m_Offset + offset_dest_ip, value);
+        ProxyUtils.writeInt(m_Data, m_Offset + offset_dest_ip, value);
     }
 
     @Override
     public String toString() {
-        return String.format("%s->%s Pro=%s,HLen=%d", CommonMethods.ipIntToString(getSourceIP()), CommonMethods.ipIntToString(getDestinationIP()), getProtocol(), getHeaderLength());
+        return String.format("%s->%s Pro=%s,HLen=%d", ProxyUtils.ipIntToString(getSourceIP()), ProxyUtils.ipIntToString(getDestinationIP()), getProtocol(), getHeaderLength());
     }
 
 }
