@@ -38,7 +38,7 @@ public class NatSessionManager {
         session.RemoteIP = remoteIP;
         session.RemotePort = remotePort;
 
-        if (ProxyConfig.isFakeIP(remoteIP)) {
+        if (ProxyConfigLoader.isFakeIP(remoteIP)) {
             session.RemoteHost = DnsProxy.reverseLookup(remoteIP);
         }
 

@@ -34,11 +34,9 @@ public class DnsProxy implements Runnable {
     public boolean Stopped;
     private static final ConcurrentHashMap<Integer, String> IPDomainMaps = new ConcurrentHashMap<Integer, String>();
     private static final ConcurrentHashMap<String, Integer> DomainIPMaps = new ConcurrentHashMap<String, Integer>();
-    private final long QUERY_TIMEOUT_NS = 10 * 1000000000L;
     private DatagramSocket m_Client;
-    private Thread m_ReceivedThread;
     private short m_QueryID;
-    private SparseArray<QueryState> m_QueryArray;
+    private final SparseArray<QueryState> m_QueryArray;
 
     public DnsProxy() throws IOException {
         m_QueryArray = new SparseArray<QueryState>();
@@ -50,7 +48,7 @@ public class DnsProxy implements Runnable {
     }
 
     public void start() {
-        m_ReceivedThread = new Thread(this);
+        Thread m_ReceivedThread = new Thread(this);
         m_ReceivedThread.setName("DnsProxyThread");
         m_ReceivedThread.start();
     }
@@ -124,7 +122,7 @@ public class DnsProxy implements Runnable {
         rPointer.setDomain((short) 0xC00C);
         rPointer.setType(question.Type);
         rPointer.setClass(question.Class);
-        rPointer.setTTL(ProxyConfig.getInstance().getDnsTTL());
+        rPointer.setTTL(ProxyConfigLoader.getsInstance().getDnsTTL());
         rPointer.setDataLength((short) 4);
         rPointer.setIP(newIP);
 
@@ -136,7 +134,7 @@ public class DnsProxy implements Runnable {
         if (fakeIP == null) {
             int hashIP = domainString.hashCode();
             do {
-                fakeIP = ProxyConfig.FAKE_NETWORK_IP | (hashIP & 0x0000FFFF);
+                fakeIP = ProxyConfigLoader.FAKE_NETWORK_IP | (hashIP & 0x0000FFFF);
                 hashIP++;
             } while (IPDomainMaps.containsKey(fakeIP));
 
@@ -151,10 +149,10 @@ public class DnsProxy implements Runnable {
             Question question = dnsPacket.Questions[0];
             if (question.Type == 1) {
                 int realIP = getFirstIP(dnsPacket);
-                if (ProxyConfig.getInstance().needProxy(question.Domain, realIP)) {
+                if (ProxyConfigLoader.getsInstance().needProxy(question.Domain, realIP)) {
                     int fakeIP = getOrCreateFakeIP(question.Domain);
                     tamperDnsResponse(rawPacket, dnsPacket, fakeIP);
-                    if (ProxyConfig.IS_DEBUG)
+                    if (ProxyConfigLoader.IS_DEBUG)
                         System.out.printf("FakeDns: %s=>%s(%s)\n", question.Domain, CommonMethods.ipIntToString(realIP), CommonMethods.ipIntToString(fakeIP));
                     return true;
                 }
@@ -202,11 +200,11 @@ public class DnsProxy implements Runnable {
         Question question = dnsPacket.Questions[0];
         System.out.println("DNS Qeury " + question.Domain);
         if (question.Type == 1) {
-            if (ProxyConfig.getInstance().needProxy(question.Domain, getIPFromCache(question.Domain))) {
+            if (ProxyConfigLoader.getsInstance().needProxy(question.Domain, getIPFromCache(question.Domain))) {
                 int fakeIP = getOrCreateFakeIP(question.Domain);
                 tamperDnsResponse(ipHeader.m_Data, dnsPacket, fakeIP);
 
-                if (ProxyConfig.IS_DEBUG)
+                if (ProxyConfigLoader.IS_DEBUG)
                     System.out.printf("interceptDns FakeDns: %s=>%s\n", question.Domain, CommonMethods.ipIntToString(fakeIP));
 
                 int sourceIP = ipHeader.getSourceIP();
@@ -228,6 +226,7 @@ public class DnsProxy implements Runnable {
         long now = System.nanoTime();
         for (int i = m_QueryArray.size() - 1; i >= 0; i--) {
             QueryState state = m_QueryArray.valueAt(i);
+            long QUERY_TIMEOUT_NS = 10 * 1000000000L;
             if ((now - state.QueryNanoTime) > QUERY_TIMEOUT_NS) {
                 m_QueryArray.removeAt(i);
             }

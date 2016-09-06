@@ -1,6 +1,6 @@
 package org.zarroboogs.smartzpn.tunnel.httpconnect;
 
-import org.zarroboogs.smartzpn.core.ProxyConfig;
+import org.zarroboogs.smartzpn.core.ProxyConfigLoader;
 import org.zarroboogs.smartzpn.tunnel.Tunnel;
 
 import java.io.IOException;
@@ -23,8 +23,8 @@ public class HttpConnectTunnel extends Tunnel {
         String request = String.format(Locale.ENGLISH, "CONNECT %s:%d HTTP/1.0\r\nProxy-Connection: keep-alive\r\nUser-Agent: %s\r\nX-App-Install-ID: %s\r\n\r\n",
                 m_DestAddress.getHostName(),
                 m_DestAddress.getPort(),
-                ProxyConfig.getInstance().getUserAgent(),
-                ProxyConfig.AppInstallID);
+                ProxyConfigLoader.getsInstance().getUserAgent(),
+                ProxyConfigLoader.AppInstallID);
 
         buffer.clear();
         buffer.put(request.getBytes());
@@ -45,7 +45,7 @@ public class HttpConnectTunnel extends Tunnel {
                 super.write(buffer, false);
                 bytesSent = 10 - buffer.remaining();
                 buffer.limit(limit);
-                if (ProxyConfig.IS_DEBUG)
+                if (ProxyConfigLoader.IS_DEBUG)
                     System.out.printf("Send %d bytes(%s) to %s\n", bytesSent, firString, m_DestAddress);
             }
         }
@@ -54,7 +54,7 @@ public class HttpConnectTunnel extends Tunnel {
 
     @Override
     protected void beforeSend(ByteBuffer buffer) throws Exception {
-        if (ProxyConfig.getInstance().isIsolateHttpHostHeader()) {
+        if (ProxyConfigLoader.getsInstance().isIsolateHttpHostHeader()) {
             trySendPartOfHeader(buffer);//尝试发送请求头的一部分，让请求头的host在第二个包里面发送，从而绕过机房的白名单机制。
         }
     }

@@ -1,8 +1,5 @@
 package org.zarroboogs.smartzpn.core;
 
-import android.annotation.SuppressLint;
-import android.os.Build;
-
 import java.io.FileInputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -26,32 +23,30 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 
-public class ProxyConfig {
-    private static final ProxyConfig Instance = new ProxyConfig();
+public class ProxyConfigLoader {
+    private static final ProxyConfigLoader sInstance = new ProxyConfigLoader();
     public final static boolean IS_DEBUG = true;
     public static String AppInstallID;
     public static String AppVersion;
     public final static int FAKE_NETWORK_MASK = CommonMethods.ipStringToInt("255.255.0.0");
     public final static int FAKE_NETWORK_IP = CommonMethods.ipStringToInt("10.231.0.0");
 
-    ArrayList<IPAddress> m_IpList;
-    ArrayList<IPAddress> m_DnsList;
-    ArrayList<IPAddress> m_RouteList;
-    ArrayList<Config> m_ProxyList;
-    HashMap<String, Boolean> m_DomainMap;
+    private ArrayList<IPAddress> mIPList;
+    private ArrayList<IPAddress> mDnsList;
+    private ArrayList<IPAddress> mRouteList;
+    private ArrayList<Config> mProxyConfigList;
+    private HashMap<String, Boolean> mDomainMap;
 
-    int m_dns_ttl;
-    String m_welcome_info;
-    String m_session_name;
-    String m_user_agent;
-    boolean m_outside_china_use_proxy = true;
-    boolean m_isolate_http_host_header = true;
-    int m_mtu;
+    private int m_dns_ttl;
+    private String m_welcome_info;
+    private String m_session_name;
+    private String m_user_agent;
+    private boolean m_outside_china_use_proxy = true;
+    private boolean m_isolate_http_host_header = true;
+    private int m_mtu;
 
-    Timer m_Timer;
-
-    public static ProxyConfig getInstance() {
-        return Instance;
+    public static ProxyConfigLoader getsInstance() {
+        return sInstance;
     }
 
     public class IPAddress {
@@ -74,10 +69,9 @@ public class ProxyConfig {
             this.PrefixLength = prefixLength;
         }
 
-        @SuppressLint("DefaultLocale")
         @Override
         public String toString() {
-            return String.format("%s/%d", Address, PrefixLength);
+            return String.format(Locale.ENGLISH, "%s/%d", Address, PrefixLength);
         }
 
         @Override
@@ -90,18 +84,18 @@ public class ProxyConfig {
         }
     }
 
-    public ProxyConfig() {
-        m_IpList = new ArrayList<IPAddress>();
-        m_DnsList = new ArrayList<IPAddress>();
-        m_RouteList = new ArrayList<IPAddress>();
-        m_ProxyList = new ArrayList<Config>();
-        m_DomainMap = new HashMap<String, Boolean>();
+    public ProxyConfigLoader() {
+        mIPList = new ArrayList<IPAddress>();
+        mDnsList = new ArrayList<IPAddress>();
+        mRouteList = new ArrayList<IPAddress>();
+        mProxyConfigList = new ArrayList<Config>();
+        mDomainMap = new HashMap<String, Boolean>();
 
-        m_Timer = new Timer();
-        m_Timer.schedule(m_Task, 120000, 120000);//每两分钟刷新一次。
+        Timer m_Timer = new Timer();
+        m_Timer.schedule(timerTask, 120000, 120000);//每两分钟刷新一次。
     }
 
-    TimerTask m_Task = new TimerTask() {
+    TimerTask timerTask = new TimerTask() {
         @Override
         public void run() {
             refreshProxyServer();//定时更新dns缓存
@@ -110,17 +104,17 @@ public class ProxyConfig {
         //定时更新dns缓存
         void refreshProxyServer() {
             try {
-                for (int i = 0; i < m_ProxyList.size(); i++) {
+                for (int i = 0; i < mProxyConfigList.size(); i++) {
                     try {
-                        Config config = m_ProxyList.get(0);
+                        Config config = mProxyConfigList.get(0);
                         InetAddress address = InetAddress.getByName(config.ServerAddress.getHostName());
                         if (address != null && !address.equals(config.ServerAddress.getAddress())) {
                             config.ServerAddress = new InetSocketAddress(address, config.ServerAddress.getPort());
                         }
-                    } catch (Exception e) {
+                    } catch (Exception ignored) {
                     }
                 }
-            } catch (Exception e) {
+            } catch (Exception ignored) {
 
             }
         }
@@ -128,12 +122,12 @@ public class ProxyConfig {
 
 
     public static boolean isFakeIP(int ip) {
-        return (ip & ProxyConfig.FAKE_NETWORK_MASK) == ProxyConfig.FAKE_NETWORK_IP;
+        return (ip & ProxyConfigLoader.FAKE_NETWORK_MASK) == ProxyConfigLoader.FAKE_NETWORK_IP;
     }
 
     public Config getDefaultProxy() {
-        if (m_ProxyList.size() > 0) {
-            return m_ProxyList.get(0);
+        if (mProxyConfigList.size() > 0) {
+            return mProxyConfigList.get(0);
         } else {
             return null;
         }
@@ -144,19 +138,19 @@ public class ProxyConfig {
     }
 
     public IPAddress getDefaultLocalIP() {
-        if (m_IpList.size() > 0) {
-            return m_IpList.get(0);
+        if (mIPList.size() > 0) {
+            return mIPList.get(0);
         } else {
             return new IPAddress("10.8.0.2", 32);
         }
     }
 
     public ArrayList<IPAddress> getDnsList() {
-        return m_DnsList;
+        return mDnsList;
     }
 
     public ArrayList<IPAddress> getRouteList() {
-        return m_RouteList;
+        return mRouteList;
     }
 
     public int getDnsTTL() {
@@ -195,7 +189,7 @@ public class ProxyConfig {
     private Boolean getDomainState(String domain) {
         domain = domain.toLowerCase();
         while (domain.length() > 0) {
-            Boolean stateBoolean = m_DomainMap.get(domain);
+            Boolean stateBoolean = mDomainMap.get(domain);
             if (stateBoolean != null) {
                 return stateBoolean;
             } else {
@@ -214,7 +208,7 @@ public class ProxyConfig {
         if (host != null) {
             Boolean stateBoolean = getDomainState(host);
             if (stateBoolean != null) {
-                return stateBoolean.booleanValue();
+                return stateBoolean;
             }
         }
 
@@ -260,7 +254,7 @@ public class ProxyConfig {
             if (inputStream != null) {
                 try {
                     inputStream.close();
-                } catch (Exception e2) {
+                } catch (Exception ignored) {
                 }
             }
         }
@@ -274,11 +268,11 @@ public class ProxyConfig {
             lines = downloadConfig(url);
         }
 
-        m_IpList.clear();
-        m_DnsList.clear();
-        m_RouteList.clear();
-        m_ProxyList.clear();
-        m_DomainMap.clear();
+        mIPList.clear();
+        mDnsList.clear();
+        mRouteList.clear();
+        mProxyConfigList.clear();
+        mDomainMap.clear();
 
         int lineNumber = 0;
         for (String line : lines) {
@@ -291,45 +285,59 @@ public class ProxyConfig {
             String tagString = items[0].toLowerCase(Locale.ENGLISH).trim();
             try {
                 if (!tagString.startsWith("#")) {
-                    if (ProxyConfig.IS_DEBUG)
+                    if (ProxyConfigLoader.IS_DEBUG)
                         System.out.println(line);
 
-                    if (tagString.equals("ip")) {
-                        addIPAddressToList(items, 1, m_IpList);
-                    } else if (tagString.equals("dns")) {
-                        addIPAddressToList(items, 1, m_DnsList);
-                    } else if (tagString.equals("route")) {
-                        addIPAddressToList(items, 1, m_RouteList);
-                    } else if (tagString.equals("proxy")) {
-                        addProxyToList(items, 1);
-                    } else if (tagString.equals("direct_domain")) {
-                        addDomainToHashMap(items, 1, false);
-                    } else if (tagString.equals("proxy_domain")) {
-                        addDomainToHashMap(items, 1, true);
-                    } else if (tagString.equals("dns_ttl")) {
-                        m_dns_ttl = Integer.parseInt(items[1]);
-                    } else if (tagString.equals("welcome_info")) {
-                        m_welcome_info = line.substring(line.indexOf(" ")).trim();
-                    } else if (tagString.equals("session_name")) {
-                        m_session_name = items[1];
-                    } else if (tagString.equals("user_agent")) {
-                        m_user_agent = line.substring(line.indexOf(" ")).trim();
-                    } else if (tagString.equals("outside_china_use_proxy")) {
-                        m_outside_china_use_proxy = convertToBool(items[1]);
-                    } else if (tagString.equals("isolate_http_host_header")) {
-                        m_isolate_http_host_header = convertToBool(items[1]);
-                    } else if (tagString.equals("mtu")) {
-                        m_mtu = Integer.parseInt(items[1]);
+                    switch (tagString) {
+                        case "ip":
+                            addIPAddressToList(items, 1, mIPList);
+                            break;
+                        case "dns":
+                            addIPAddressToList(items, 1, mDnsList);
+                            break;
+                        case "route":
+                            addIPAddressToList(items, 1, mRouteList);
+                            break;
+                        case "proxy":
+                            addProxyToList(items, 1);
+                            break;
+                        case "direct_domain":
+                            addDomainToHashMap(items, 1, false);
+                            break;
+                        case "proxy_domain":
+                            addDomainToHashMap(items, 1, true);
+                            break;
+                        case "dns_ttl":
+                            m_dns_ttl = Integer.parseInt(items[1]);
+                            break;
+                        case "welcome_info":
+                            m_welcome_info = line.substring(line.indexOf(" ")).trim();
+                            break;
+                        case "session_name":
+                            m_session_name = items[1];
+                            break;
+                        case "user_agent":
+                            m_user_agent = line.substring(line.indexOf(" ")).trim();
+                            break;
+                        case "outside_china_use_proxy":
+                            m_outside_china_use_proxy = convertToBool(items[1]);
+                            break;
+                        case "isolate_http_host_header":
+                            m_isolate_http_host_header = convertToBool(items[1]);
+                            break;
+                        case "mtu":
+                            m_mtu = Integer.parseInt(items[1]);
+                            break;
                     }
                 }
             } catch (Exception e) {
-                throw new Exception(String.format("SmartProxy config file parse error: line:%d, tag:%s, error:%s", lineNumber, tagString, e));
+                throw new Exception(String.format(Locale.ENGLISH, "SmartProxy config file parse error: line:%d, tag:%s, error:%s", lineNumber, tagString, e));
             }
 
         }
 
         //查找默认代理。
-        if (m_ProxyList.size() == 0) {
+        if (mProxyConfigList.size() == 0) {
             tryAddProxy(lines);
         }
     }
@@ -341,9 +349,9 @@ public class ProxyConfig {
             while (m.find()) {
                 HttpConnectConfig config = new HttpConnectConfig();
                 config.ServerAddress = new InetSocketAddress(m.group(1), Integer.parseInt(m.group(2)));
-                if (!m_ProxyList.contains(config)) {
-                    m_ProxyList.add(config);
-                    m_DomainMap.put(config.ServerAddress.getHostName(), false);
+                if (!mProxyConfigList.contains(config)) {
+                    mProxyConfigList.add(config);
+                    mDomainMap.put(config.ServerAddress.getHostName(), false);
                 }
             }
         }
@@ -361,9 +369,9 @@ public class ProxyConfig {
                 }
                 config = HttpConnectConfig.parse(proxyString);
             }
-            if (!m_ProxyList.contains(config)) {
-                m_ProxyList.add(config);
-                m_DomainMap.put(config.ServerAddress.getHostName(), false);
+            if (!mProxyConfigList.contains(config)) {
+                mProxyConfigList.add(config);
+                mDomainMap.put(config.ServerAddress.getHostName(), false);
             }
         }
     }
@@ -374,7 +382,7 @@ public class ProxyConfig {
             if (domainString.charAt(0) == '.') {
                 domainString = domainString.substring(1);
             }
-            m_DomainMap.put(domainString, state);
+            mDomainMap.put(domainString, state);
         }
     }
 
