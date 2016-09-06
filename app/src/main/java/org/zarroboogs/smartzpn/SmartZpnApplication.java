@@ -8,13 +8,14 @@ import android.content.Context;
  */
 public class SmartZpnApplication extends Application {
     private static Context mContext;
+
     @Override
     public void onCreate() {
         super.onCreate();
         mContext = this.getApplicationContext();
     }
 
-    public static Context getContext(){
+    public static Context getContext() {
         return mContext;
     }
 }

@@ -17,15 +17,15 @@ import org.zarroboogs.smartzpn.core.LocalVpnService;
 import org.zarroboogs.smartzpn.ui.widget.ProgressButton;
 import org.zarroboogs.smartzpn.utis.TokenUtils;
 
-public class MenuActivity extends AppCompatActivity implements View.OnClickListener,LocalVpnService.onStatusChangedListener{
+public class MenuActivity extends AppCompatActivity implements View.OnClickListener, LocalVpnService.onStatusChangedListener {
 
-        private Toolbar mToolbar;
-        private ProgressButton mConnBtn;
-        private GuillotineAnimation mCuillotine;
-        private static final int START_VPN_SERVICE_REQUEST_CODE = 1985;
+    private Toolbar mToolbar;
+    private ProgressButton mConnBtn;
+    private GuillotineAnimation mCuillotine;
+    private static final int START_VPN_SERVICE_REQUEST_CODE = 1985;
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         //透明状态栏
@@ -43,7 +43,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         mConnBtn = (ProgressButton) findViewById(R.id.connectionBtn);
-        if (LocalVpnService.IsRunning){
+        if (LocalVpnService.IsRunning) {
             mConnBtn.setComplete();
         }
 
@@ -79,8 +79,8 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.connectionBtn){
-            if (!LocalVpnService.IsRunning){
+        if (v.getId() == R.id.connectionBtn) {
+            if (!LocalVpnService.IsRunning) {
                 mConnBtn.showProgress();
                 mConnBtn.setClickable(false);
                 Intent intent = LocalVpnService.prepare(this);
@@ -135,7 +135,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onConnectionChanged(boolean isConn) {
         mConnBtn.stopShowProgress();
-        if (isConn){
+        if (isConn) {
             mConnBtn.setComplete();
         } else {
             mConnBtn.setIdle();

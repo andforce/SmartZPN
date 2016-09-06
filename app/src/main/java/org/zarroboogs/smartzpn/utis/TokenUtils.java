@@ -22,11 +22,11 @@ public class TokenUtils {
         mSharedPreferences.edit().putString(TOKEN, token).commit();
     }
 
-    public static String getSpec(){
+    public static String getSpec() {
         return mSharedPreferences.getString(SPEC, "");
     }
 
-    public static void setSpec(String spec){
-        mSharedPreferences.edit().putString(SPEC,spec).commit();
+    public static void setSpec(String spec) {
+        mSharedPreferences.edit().putString(SPEC, spec).commit();
     }
 }
