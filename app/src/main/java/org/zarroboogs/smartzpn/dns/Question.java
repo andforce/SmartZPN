@@ -36,4 +36,9 @@ public class Question {
         buffer.putShort(this.Class);
         this.length = buffer.position() - this.offset;
     }
+
+    @Override
+    public String toString() {
+        return Domain;
+    }
 }

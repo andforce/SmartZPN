@@ -7,4 +7,9 @@ public class NatSession {
     public int BytesSent;
     public int PacketSent;
     public long LastNanoTime;
+
+    @Override
+    public String toString() {
+        return "RemoteIP:" + RemoteIP + " RemotePort:" + RemotePort + " RemoteHost:" + RemoteHost;
+    }
 }
