@@ -194,17 +194,22 @@ public class LocalVpnService extends VpnService implements Runnable, ProxyConfig
         this.mVPNInterface = establishVPN();
         this.mVPNOutputStream = new FileOutputStream(mVPNInterface.getFileDescriptor());
         FileInputStream in = new FileInputStream(mVPNInterface.getFileDescriptor());
-        int size = 0;
-        while (size != -1) {
-            while ((size = in.read(mPacket)) > 0) {
-                if (mDnsProxy.Stopped || mTCPProxyServer.Stopped) {
-                    in.close();
-                    throw new Exception("LocalServer stopped.");
-                }
+
+        int size;
+        while ((size = in.read(mPacket)) != -1) {
+            if (mDnsProxy.Stopped || mTCPProxyServer.Stopped) {
+                in.close();
+                throw new Exception("LocalServer stopped.");
+            }
+            if (size == 0){
+                Thread.sleep(100);
+            } else {
                 onIPPacketReceived(mIPHeader, size);
             }
-            Thread.sleep(100);
+
         }
+
+
         in.close();
         disconnectVPN();
     }
