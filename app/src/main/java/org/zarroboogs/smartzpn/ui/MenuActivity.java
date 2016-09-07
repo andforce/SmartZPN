@@ -14,6 +14,7 @@ import com.yalantis.guillotine.interfaces.GuillotineListener;
 
 import org.zarroboogs.smartzpn.R;
 import org.zarroboogs.smartzpn.core.LocalVpnService;
+import org.zarroboogs.smartzpn.core.SmartVpnService;
 import org.zarroboogs.smartzpn.ui.widget.ProgressButton;
 import org.zarroboogs.smartzpn.utils.TokenUtils;
 
@@ -80,23 +81,32 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.connectionBtn) {
-            if (true) {
-                mConnBtn.showProgress();
-                mConnBtn.setClickable(false);
-                Intent intent = LocalVpnService.prepare(this);
-                if (intent == null) {
-                    startVPNService();
-                } else {
-                    startActivityForResult(intent, START_VPN_SERVICE_REQUEST_CODE);
-                }
-            } else {
-                mConnBtn.showProgress();
-                LocalVpnService.Instance.disconnectVPN();
-                stopService(new Intent(MenuActivity.this, LocalVpnService.class));
-                System.runFinalization();
-                System.exit(0);
 
-            }
+            String prefix = getPackageName();
+            Intent intent = new Intent(this, SmartVpnService.class)
+                    .putExtra(prefix + ".ADDRESS", "")
+                    .putExtra(prefix + ".PORT", "")
+                    .putExtra(prefix + ".SECRET", "");
+            startService(intent);
+
+
+//            if (true) {
+//                mConnBtn.showProgress();
+//                mConnBtn.setClickable(false);
+//                Intent intent = LocalVpnService.prepare(this);
+//                if (intent == null) {
+//                    startVPNService();
+//                } else {
+//                    startActivityForResult(intent, START_VPN_SERVICE_REQUEST_CODE);
+//                }
+//            } else {
+//                mConnBtn.showProgress();
+//                LocalVpnService.Instance.disconnectVPN();
+//                stopService(new Intent(MenuActivity.this, LocalVpnService.class));
+//                System.runFinalization();
+//                System.exit(0);
+//
+//            }
         }
     }
 
