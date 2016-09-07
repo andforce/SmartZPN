@@ -17,12 +17,12 @@ import java.util.UUID;
 
 public class HttpConnectTunnel extends Tunnel {
 
-    private boolean m_TunnelEstablished;
-    private HttpConnectConfig m_Config;
+    private boolean mTunnelEstablished;
+    private HttpConnectConfig mConfig;
 
     public HttpConnectTunnel(HttpConnectConfig config, Selector selector) throws IOException {
         super(config.ServerAddress, selector);
-        m_Config = config;
+        mConfig = config;
     }
 
     @Override
@@ -92,7 +92,7 @@ public class HttpConnectTunnel extends Tunnel {
 
     @Override
     protected void afterReceived(ByteBuffer buffer) throws Exception {
-        if (!m_TunnelEstablished) {
+        if (!mTunnelEstablished) {
             //收到代理服务器响应数据
             //分析响应并判断是否连接成功
             String response = new String(buffer.array(), buffer.position(), 12);
@@ -102,19 +102,19 @@ public class HttpConnectTunnel extends Tunnel {
                 throw new Exception(String.format("Proxy server responsed an error: %s", response));
             }
 
-            m_TunnelEstablished = true;
+            mTunnelEstablished = true;
             super.onTunnelEstablished();
         }
     }
 
     @Override
     protected boolean isTunnelEstablished() {
-        return m_TunnelEstablished;
+        return mTunnelEstablished;
     }
 
     @Override
     protected void onDispose() {
-        m_Config = null;
+        mConfig = null;
     }
 
 

@@ -82,31 +82,31 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if (v.getId() == R.id.connectionBtn) {
 
-            String prefix = getPackageName();
-            Intent intent = new Intent(this, SmartVpnService.class)
-                    .putExtra(prefix + ".ADDRESS", "")
-                    .putExtra(prefix + ".PORT", "")
-                    .putExtra(prefix + ".SECRET", "");
-            startService(intent);
+//            String prefix = getPackageName();
+//            Intent intent = new Intent(this, SmartVpnService.class)
+//                    .putExtra(prefix + ".ADDRESS", "")
+//                    .putExtra(prefix + ".PORT", "")
+//                    .putExtra(prefix + ".SECRET", "");
+//            startService(intent);
 
 
-//            if (true) {
-//                mConnBtn.showProgress();
-//                mConnBtn.setClickable(false);
-//                Intent intent = LocalVpnService.prepare(this);
-//                if (intent == null) {
-//                    startVPNService();
-//                } else {
-//                    startActivityForResult(intent, START_VPN_SERVICE_REQUEST_CODE);
-//                }
-//            } else {
-//                mConnBtn.showProgress();
-//                LocalVpnService.Instance.disconnectVPN();
-//                stopService(new Intent(MenuActivity.this, LocalVpnService.class));
-//                System.runFinalization();
-//                System.exit(0);
-//
-//            }
+            if (true) {
+                mConnBtn.showProgress();
+                mConnBtn.setClickable(false);
+                Intent intent = LocalVpnService.prepare(this);
+                if (intent == null) {
+                    startVPNService();
+                } else {
+                    startActivityForResult(intent, START_VPN_SERVICE_REQUEST_CODE);
+                }
+            } else {
+                mConnBtn.showProgress();
+                LocalVpnService.Instance.disconnectVPN();
+                stopService(new Intent(MenuActivity.this, LocalVpnService.class));
+                System.runFinalization();
+                System.exit(0);
+
+            }
         }
     }
 
@@ -129,7 +129,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         String configUrl = TokenUtils.getSpec();
         LocalVpnService.ConfigUrl = configUrl;
         Intent intent = new Intent(this, LocalVpnService.class);
-        intent.putExtra("PROXY_URL", "url");
+        intent.putExtra("PROXY_URL", "https://qypac.net/19kwr8eq");
         startService(intent);
     }
 

@@ -1,6 +1,5 @@
 package org.zarroboogs.smartzpn.utils;
 
-import org.zarroboogs.smartzpn.core.ProxyConfigLoader;
 import org.zarroboogs.smartzpn.tcpip.IPHeader;
 import org.zarroboogs.smartzpn.tcpip.TCPHeader;
 import org.zarroboogs.smartzpn.tcpip.UDPHeader;
@@ -119,8 +118,8 @@ public class ProxyUtils {
     public static boolean ComputeIPChecksum(IPHeader ipHeader) {
         short oldCrc = ipHeader.getCrc();
         ipHeader.setCrc((short) 0);// 计算前置零
-        short newCrc = ProxyUtils.checksum(0, ipHeader.m_Data,
-                ipHeader.m_Offset, ipHeader.getHeaderLength());
+        short newCrc = ProxyUtils.checksum(0, ipHeader.mData,
+                ipHeader.mOffset, ipHeader.getHeaderLength());
         ipHeader.setCrc(newCrc);
         return oldCrc == newCrc;
     }
@@ -132,7 +131,7 @@ public class ProxyUtils {
         if (ipData_len < 0)
             return false;
         // 计算为伪首部和
-        long sum = getsum(ipHeader.m_Data, ipHeader.m_Offset
+        long sum = getsum(ipHeader.mData, ipHeader.mOffset
                 + IPHeader.offset_src_ip, 8);
         sum += ipHeader.getProtocol() & 0xFF;
         sum += ipData_len;
@@ -153,7 +152,7 @@ public class ProxyUtils {
         if (ipData_len < 0)
             return false;
         // 计算为伪首部和
-        long sum = getsum(ipHeader.m_Data, ipHeader.m_Offset
+        long sum = getsum(ipHeader.mData, ipHeader.mOffset
                 + IPHeader.offset_src_ip, 8);
         sum += ipHeader.getProtocol() & 0xFF;
         sum += ipData_len;

@@ -34,13 +34,13 @@ public class DnsProxy implements Runnable {
     public boolean Stopped;
     private static final ConcurrentHashMap<Integer, String> IPDomainMaps = new ConcurrentHashMap<Integer, String>();
     private static final ConcurrentHashMap<String, Integer> DomainIPMaps = new ConcurrentHashMap<String, Integer>();
-    private DatagramSocket m_Client;
-    private short m_QueryID;
-    private final SparseArray<QueryState> m_QueryArray;
+    private DatagramSocket mClient;
+    private short mQueryID;
+    private final SparseArray<QueryState> mQueryArray;
 
     public DnsProxy() throws IOException {
-        m_QueryArray = new SparseArray<QueryState>();
-        m_Client = new DatagramSocket(0);
+        mQueryArray = new SparseArray<QueryState>();
+        mClient = new DatagramSocket(0);
     }
 
     public static String reverseLookup(int ip) {
@@ -55,9 +55,9 @@ public class DnsProxy implements Runnable {
 
     public void stop() {
         Stopped = true;
-        if (m_Client != null) {
-            m_Client.close();
-            m_Client = null;
+        if (mClient != null) {
+            mClient.close();
+            mClient = null;
         }
     }
 
@@ -75,10 +75,10 @@ public class DnsProxy implements Runnable {
 
             DatagramPacket packet = new DatagramPacket(RECEIVE_BUFFER, 28, RECEIVE_BUFFER.length - 28);
 
-            while (m_Client != null && !m_Client.isClosed()) {
+            while (mClient != null && !mClient.isClosed()) {
 
                 packet.setLength(RECEIVE_BUFFER.length - 28);
-                m_Client.receive(packet);
+                mClient.receive(packet);
 
                 dnsBuffer.clear();
                 dnsBuffer.limit(packet.getLength());
@@ -163,10 +163,10 @@ public class DnsProxy implements Runnable {
 
     private void OnDnsResponseReceived(IPHeader ipHeader, UDPHeader udpHeader, DnsPacket dnsPacket) {
         QueryState state = null;
-        synchronized (m_QueryArray) {
-            state = m_QueryArray.get(dnsPacket.Header.ID);
+        synchronized (mQueryArray) {
+            state = mQueryArray.get(dnsPacket.Header.ID);
             if (state != null) {
-                m_QueryArray.remove(dnsPacket.Header.ID);
+                mQueryArray.remove(dnsPacket.Header.ID);
             }
         }
 
@@ -202,7 +202,7 @@ public class DnsProxy implements Runnable {
         if (question.Type == 1) {
             if (ProxyConfigLoader.getsInstance().needProxy(question.Domain, getIPFromCache(question.Domain))) {
                 int fakeIP = getOrCreateFakeIP(question.Domain);
-                tamperDnsResponse(ipHeader.m_Data, dnsPacket, fakeIP);
+                tamperDnsResponse(ipHeader.mData, dnsPacket, fakeIP);
 
                 if (ProxyConfigLoader.IS_DEBUG)
                     System.out.printf("interceptDns FakeDns: %s=>%s\n", question.Domain, ProxyUtils.ipIntToString(fakeIP));
@@ -224,11 +224,11 @@ public class DnsProxy implements Runnable {
 
     private void clearExpiredQueries() {
         long now = System.nanoTime();
-        for (int i = m_QueryArray.size() - 1; i >= 0; i--) {
-            QueryState state = m_QueryArray.valueAt(i);
+        for (int i = mQueryArray.size() - 1; i >= 0; i--) {
+            QueryState state = mQueryArray.valueAt(i);
             long QUERY_TIMEOUT_NS = 10 * 1000000000L;
             if ((now - state.QueryNanoTime) > QUERY_TIMEOUT_NS) {
-                m_QueryArray.removeAt(i);
+                mQueryArray.removeAt(i);
             }
         }
     }
@@ -245,12 +245,12 @@ public class DnsProxy implements Runnable {
             state.RemotePort = udpHeader.getDestinationPort();
 
             // 转换QueryID
-            m_QueryID++;// 增加ID
-            dnsPacket.Header.setID(m_QueryID);
+            mQueryID++;// 增加ID
+            dnsPacket.Header.setID(mQueryID);
 
-            synchronized (m_QueryArray) {
+            synchronized (mQueryArray) {
                 clearExpiredQueries();//清空过期的查询，减少内存开销。
-                m_QueryArray.put(m_QueryID, state);// 关联数据
+                mQueryArray.put(mQueryID, state);// 关联数据
             }
 
             InetSocketAddress remoteAddress = new InetSocketAddress(ProxyUtils.ipIntToInet4Address(state.RemoteIP), state.RemotePort);
@@ -258,8 +258,8 @@ public class DnsProxy implements Runnable {
             packet.setSocketAddress(remoteAddress);
 
             try {
-                if (LocalVpnService.Instance.protect(m_Client)) {
-                    m_Client.send(packet);
+                if (LocalVpnService.Instance.protect(mClient)) {
+                    mClient.send(packet);
                 } else {
                     System.err.println("VPN protect udp socket failed.");
                 }

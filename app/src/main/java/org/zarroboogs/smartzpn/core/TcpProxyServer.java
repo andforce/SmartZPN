@@ -16,41 +16,41 @@ public class TcpProxyServer implements Runnable {
     public boolean Stopped;
     public short Port;
 
-    Selector m_Selector;
-    ServerSocketChannel m_ServerSocketChannel;
-    Thread m_ServerThread;
+    private Selector mSelector;
+    private ServerSocketChannel mServerSocketChannel;
+    private Thread mServerThread;
 
     public TcpProxyServer(int port) throws IOException {
-        m_Selector = Selector.open();
-        m_ServerSocketChannel = ServerSocketChannel.open();
-        m_ServerSocketChannel.configureBlocking(false);
-        m_ServerSocketChannel.socket().bind(new InetSocketAddress(port));
-        m_ServerSocketChannel.register(m_Selector, SelectionKey.OP_ACCEPT);
-        this.Port = (short) m_ServerSocketChannel.socket().getLocalPort();
+        mSelector = Selector.open();
+        mServerSocketChannel = ServerSocketChannel.open();
+        mServerSocketChannel.configureBlocking(false);
+        mServerSocketChannel.socket().bind(new InetSocketAddress(port));
+        mServerSocketChannel.register(mSelector, SelectionKey.OP_ACCEPT);
+        this.Port = (short) mServerSocketChannel.socket().getLocalPort();
         System.out.printf("AsyncTcpServer listen on %d success.\n", this.Port & 0xFFFF);
     }
 
     public void start() {
-        m_ServerThread = new Thread(this);
-        m_ServerThread.setName("TcpProxyServerThread");
-        m_ServerThread.start();
+        mServerThread = new Thread(this);
+        mServerThread.setName("TcpProxyServerThread");
+        mServerThread.start();
     }
 
     public void stop() {
         this.Stopped = true;
-        if (m_Selector != null) {
+        if (mSelector != null) {
             try {
-                m_Selector.close();
-                m_Selector = null;
+                mSelector.close();
+                mSelector = null;
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        if (m_ServerSocketChannel != null) {
+        if (mServerSocketChannel != null) {
             try {
-                m_ServerSocketChannel.close();
-                m_ServerSocketChannel = null;
+                mServerSocketChannel.close();
+                mServerSocketChannel = null;
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -61,8 +61,8 @@ public class TcpProxyServer implements Runnable {
     public void run() {
         try {
             while (true) {
-                m_Selector.select();
-                Iterator<SelectionKey> keyIterator = m_Selector.selectedKeys().iterator();
+                mSelector.select();
+                Iterator<SelectionKey> keyIterator = mSelector.selectedKeys().iterator();
                 while (keyIterator.hasNext()) {
                     SelectionKey key = keyIterator.next();
                     if (key.isValid()) {
@@ -109,12 +109,12 @@ public class TcpProxyServer implements Runnable {
     void onAccepted(SelectionKey key) {
         Tunnel localTunnel = null;
         try {
-            SocketChannel localChannel = m_ServerSocketChannel.accept();
-            localTunnel = TunnelFactory.wrap(localChannel, m_Selector);
+            SocketChannel localChannel = mServerSocketChannel.accept();
+            localTunnel = TunnelFactory.wrap(localChannel, mSelector);
 
             InetSocketAddress destAddress = getDestAddress(localChannel);
             if (destAddress != null) {
-                Tunnel remoteTunnel = TunnelFactory.createTunnelByConfig(destAddress, m_Selector);
+                Tunnel remoteTunnel = TunnelFactory.createTunnelByConfig(destAddress, mSelector);
                 remoteTunnel.setBrotherTunnel(localTunnel);//关联兄弟
                 localTunnel.setBrotherTunnel(remoteTunnel);//关联兄弟
                 remoteTunnel.connect(destAddress);//开始连接

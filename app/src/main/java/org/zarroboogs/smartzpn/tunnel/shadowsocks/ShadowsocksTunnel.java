@@ -9,8 +9,8 @@ import java.nio.channels.Selector;
 
 public class ShadowsocksTunnel extends Tunnel {
 
-    private IEncryptor m_Encryptor;
-    private ShadowsocksConfig m_Config;
+    private IEncryptor mEncryptor;
+    private ShadowsocksConfig mConfig;
     private boolean m_TunnelEstablished;
 
     public ShadowsocksTunnel(ShadowsocksConfig config, Selector selector) throws Exception {
@@ -18,8 +18,8 @@ public class ShadowsocksTunnel extends Tunnel {
         if (config.Encryptor == null) {
             throw new Exception("Error: The Encryptor for ShadowsocksTunnel is null.");
         }
-        m_Config = config;
-        m_Encryptor = config.Encryptor;
+        mConfig = config;
+        mEncryptor = config.Encryptor;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ShadowsocksTunnel extends Tunnel {
         buffer.putShort((short) m_DestAddress.getPort());
         buffer.flip();
 
-        m_Encryptor.encrypt(buffer);
+        mEncryptor.encrypt(buffer);
         if (write(buffer, true)) {
             m_TunnelEstablished = true;
             onTunnelEstablished();
@@ -51,18 +51,18 @@ public class ShadowsocksTunnel extends Tunnel {
 
     @Override
     protected void beforeSend(ByteBuffer buffer) throws Exception {
-        m_Encryptor.encrypt(buffer);
+        mEncryptor.encrypt(buffer);
     }
 
     @Override
     protected void afterReceived(ByteBuffer buffer) throws Exception {
-        m_Encryptor.decrypt(buffer);
+        mEncryptor.decrypt(buffer);
     }
 
     @Override
     protected void onDispose() {
-        m_Config = null;
-        m_Encryptor = null;
+        mConfig = null;
+        mEncryptor = null;
     }
 
 }
