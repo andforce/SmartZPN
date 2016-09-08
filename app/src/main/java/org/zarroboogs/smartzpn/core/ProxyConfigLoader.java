@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 
 
 import org.zarroboogs.smartzpn.R;
+import org.zarroboogs.smartzpn.tunnel.pacscript.PacScriptParser;
 import org.zarroboogs.smartzpn.utils.ProxyUtils;
 import org.zarroboogs.smartzpn.tunnel.Config;
 import org.zarroboogs.smartzpn.tunnel.httpconnect.HttpConnectConfig;
@@ -44,6 +45,8 @@ public class ProxyConfigLoader {
     private boolean m_outside_china_use_proxy = true;
     private boolean m_isolate_http_host_header = true;
     private int m_mtu;
+
+    private PacScriptParser mPacScriptParser;
 
     private OnProxyConfigLoadListener mOnProxyConfigLoadListener;
 
@@ -87,6 +90,7 @@ public class ProxyConfigLoader {
     }
 
     public ProxyConfigLoader() {
+
         mIPList = new ArrayList<IPAddress>();
         mDnsServers = new ArrayList<IPAddress>();
         mRouteList = new ArrayList<IPAddress>();
@@ -215,6 +219,12 @@ public class ProxyConfigLoader {
         if (ProxyUtils.isFakeIP(ip))
             return true;
 
+        if (mPacScriptParser != null){
+            String proxy = mPacScriptParser.findProxyForURL(host, host);
+            if (proxy.contains("PROXY")){
+                return true;
+            }
+        }
         if (m_outside_china_use_proxy && ip != 0) {
             return !ChinaIpMaskManager.isIPInChina(ip);
         }
@@ -233,6 +243,7 @@ public class ProxyConfigLoader {
             Response response = call.execute();
 
             String line = response.body().string();
+            mPacScriptParser = new PacScriptParser(line);
             return line.split("\n");
         } catch (Exception e) {
 
