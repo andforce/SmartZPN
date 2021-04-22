@@ -1,1 +1,3 @@
+include ':CircleButton'
 include ':app', ':GuillotineMenu'
+rootProject.name = "SmartZPN"

@@ -2,19 +2,19 @@ package org.zarroboogs.smartzpn.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.yalantis.guillotine.animation.GuillotineAnimation;
 import com.yalantis.guillotine.interfaces.GuillotineListener;
 
 import org.zarroboogs.smartzpn.R;
 import org.zarroboogs.smartzpn.core.LocalVpnService;
-import org.zarroboogs.smartzpn.core.SmartVpnService;
 import org.zarroboogs.smartzpn.ui.widget.ProgressButton;
 import org.zarroboogs.smartzpn.utils.TokenUtils;
 

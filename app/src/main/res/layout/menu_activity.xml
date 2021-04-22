@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             style="@style/Toolbar"
             app:contentInsetStart="0dp">
@@ -37,7 +37,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/guillotine_item_text_size"
                 android:textStyle="bold" />
-        </android.support.v7.widget.Toolbar>
+        </androidx.appcompat.widget.Toolbar>
 
         <RelativeLayout
             android:layout_width="match_parent"
